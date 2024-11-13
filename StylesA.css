@@ -1,0 +1,276 @@
+/* Reset một số kiểu mặc định */
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f8f8;
+}
+
+
+/* HEADER */
+
+header {
+    background: #333;
+    color: #fff;
+}
+
+#top-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+#top-header ul {
+    display: flex;
+}
+
+#top-header li {
+    margin-right: 15px;
+}
+
+#top-header a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo img {
+    max-width: 100px;
+}
+
+.search-bar input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    padding: 10px;
+    background: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.cart-item {
+    margin-bottom: 20px;
+    /* Thay đổi giá trị này để điều chỉnh khoảng cách */
+    border: 1px solid #ccc;
+    /* Thêm viền nếu cần */
+    padding: 10px;
+    /* Thêm khoảng đệm bên trong */
+    border-radius: 5px;
+    /* Thêm góc bo tròn nếu thích */
+}
+
+
+/* NAVIGATION */
+
+nav {
+    background: #444;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+nav li {
+    margin: 0 15px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+/* SECTION: SẢN PHẨM */
+
+section {
+    padding: 20px;
+    background: #fff;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* THÔNG TIN TÀI KHOẢN */
+
+.account-info {
+    margin-bottom: 20px;
+}
+
+.update-info form {
+    display: flex;
+    flex-direction: column;
+}
+
+.update-info label {
+    margin: 10px 0 5px;
+}
+
+.update-info input[type="text"],
+.update-info input[type="email"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* VOUCHER & SẢN PHẨM GIẢM GIÁ */
+
+.voucher-list {
+    margin-bottom: 20px;
+}
+
+.voucher {
+    background: #e7f3fe;
+    border: 1px solid #b3d4fc;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.discount-products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.product {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 200px;
+}
+
+.products {
+    display: flex;
+    overflow-x: auto;
+    /* Cho phép cuộn ngang */
+    scroll-snap-type: x mandatory;
+    /* Hiệu ứng cuộn mượt mà */
+    padding: 10px;
+}
+
+.product,
+.cart-item {
+    flex: 0 0 auto;
+    /* Ngăn các sản phẩm tự co giãn */
+    width: 200px;
+    /* Chiều rộng của mỗi sản phẩm */
+    margin-right: 10px;
+    /* Khoảng cách giữa các sản phẩm */
+    scroll-snap-align: start;
+    /* Định vị sản phẩm khi cuộn */
+    border: 1px solid #ccc;
+    /* Đường viền sản phẩm */
+    padding: 10px;
+    /* Khoảng cách bên trong sản phẩm */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Hiệu ứng bóng */
+}
+
+.product img {
+    max-width: 100%;
+    /* Đảm bảo hình ảnh không vượt quá chiều rộng sản phẩm */
+    height: auto;
+    /* Giữ tỷ lệ hình ảnh */
+}
+
+.product img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product h4 {
+    margin: 10px 0;
+}
+
+.product .original-price {
+    text-decoration: line-through;
+    color: red;
+}
+
+.product .discount-price {
+    font-size: 1.2em;
+    color: green;
+}
+
+.product button {
+    padding: 10px;
+    background: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #333;
+    color: #fff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+/*quy định kích cỡ cho ảnh trong giỏ hàng */
+
+.item-image img {
+    width: 150px;
+    /* Thay đổi kích thước theo nhu cầu */
+    height: auto;
+    /* Giữ tỉ lệ khung hình */
+    max-width: 100%;
+    /* Đảm bảo hình ảnh không vượt quá chiều rộng của phần tử cha */
+}
+
+
+/*chinh kich thuoc khi dua vao gio hang*/
+
+.cart-animation {
+    position: absolute;
+    transition: transform 0.5s ease;
+    pointer-events: none;
+    /* Ngăn không cho hình ảnh ảnh hưởng đến sự kiện chuột */
+    width: 50px;
+    /* Thay đổi kích thước theo ý muốn */
+    height: auto;
+    /* Giữ tỷ lệ */
+}

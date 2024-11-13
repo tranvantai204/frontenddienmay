@@ -1,0 +1,707 @@
+/* Reset some default styles */
+body, h2, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light background color */
+    color: #333; /* Dark text color */
+}
+
+/* Container for the login form */
+.login-container {
+    max-width: 400px; /* Set a maximum width for the form */
+    margin: 50px auto; /* Center the form vertically and horizontally */
+    padding: 20px; /* Add padding inside the container */
+    background-color: #ffffff; /* White background for the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Heading styling */
+h2 {
+    text-align: center; /* Center the heading */
+    margin-bottom: 20px; /* Space below the heading */
+    color: #007bff; /* Bootstrap primary color */
+}
+
+/* Input group styling */
+.input-group {
+    margin-bottom: 15px; /* Space between input groups */
+}
+
+/* Label styling */
+label {
+    display: block; /* Make labels block elements */
+    margin-bottom: 5px; /* Space below labels */
+    font-weight: bold; /* Bold font for labels */
+}
+
+/* Input field styling */
+input[type="text"],
+input[type="password"] {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding inside inputs */
+    border: 1px solid #ced4da; /* Light border color */
+    border-radius: 5px; /* Rounded corners */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+/* Focus effect for input fields */
+input:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove outline */
+}
+
+/* Button styling */
+button {
+    width: 100%; /* Full width button */
+    padding: 10px; /* Padding inside button */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+/* Reset một số kiểu mặc định */
+body, h1, h2, h3, p, table {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5; /* Màu nền nhẹ giống Facebook */
+    color: #333; /* Màu chữ tối */
+}
+
+/* Container styling */
+.container {
+    display: flex; /* Sử dụng flexbox để chia bố cục */
+    max-width: 1200px; /* Chiều rộng tối đa */
+    margin: 0 auto; /* Căn giữa */
+    padding: 20px; /* Padding cho container */
+}
+
+/* Sidebar styling */
+.sidebar {
+    flex: 1; /* Chiếm 1 phần của flex container */
+    background-color: #ffffff; /* Nền trắng cho sidebar */
+    border-radius: 8px; /* Bo tròn các góc */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    padding: 20px; /* Padding cho sidebar */
+    margin-right: 20px; /* Khoảng cách bên phải */
+}
+
+/* Main content styling */
+.main-content {
+    flex: 3; /* Chiếm 3 phần của flex container */
+    background-color: #ffffff; /* Nền trắng cho nội dung chính */
+    border-radius: 8px; /* Bo tròn các góc */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    padding: 20px; /* Padding cho nội dung chính */
+}
+
+/* Button styling */
+.btn {
+    background-color: #007bff; /* Màu nền cho nút */
+    color: white; /* Màu chữ trắng */
+    padding: 10px 15px; /* Padding cho nút */
+    border: none; /* Không có viền */
+    border-radius: 5px; /* Bo tròn các góc */
+    cursor: pointer; /* Con trỏ khi hover */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu nền */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+}
+
+/* Table styling */
+.table {
+    width: 100%; /* Đầy đủ chiều rộng */
+    margin-top: 20px; /* Khoảng cách trên bảng */
+    border-collapse: collapse; /* Gộp các đường viền */
+}
+
+.table th, .table td {
+    padding: 12px; /* Padding cho ô */
+    text-align: left; /* Căn trái cho chữ */
+    border-bottom: 1px solid #dee2e6; /* Đường viền dưới */
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1; /* Màu nền khi hover */
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Đổi chiều flex cho thiết bị nhỏ */
+    }
+    .sidebar {
+        margin-right: 0; /* Xóa khoảng cách bên phải */
+        margin-bottom: 20px; /* Khoảng cách dưới cho sidebar */
+    }
+}
+/* Reset CSS cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Toàn bộ trang */
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Khung chính của form thêm sản phẩm */
+.content {
+    background-color: white;
+    width: 400px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    text-align: center;
+}
+
+/* Tiêu đề form */
+.content h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Input styling */
+input {
+    width: 100%;
+    margin: 10px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    transition: border-color 0.3s;
+}
+
+/* Hiệu ứng khi focus vào input */
+input:focus {
+    border-color: #5a9;
+    outline: none;
+}
+
+/* Nút lưu và hủy */
+button {
+    width: 45%;
+    padding: 15px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+/* Nút lưu với màu xanh lá */
+button:first-of-type {
+    background-color: #4caf50;
+    color: white;
+}
+
+button:first-of-type:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+/* Nút hủy với màu đỏ nhạt */
+button:last-of-type {
+    background-color: #f44336;
+    color: white;
+}
+
+button:last-of-type:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+}
+
+/* Hiệu ứng khi hover vào các nút */
+button:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+/* styles.css */
+
+/* Reset một số kiểu mặc định của trình duyệt */
+body, h2, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Cài đặt kiểu nền cho toàn bộ trang */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2; /* Màu nền sáng */
+    color: #333; /* Màu chữ tối */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Chiều cao toàn bộ trang */
+}
+
+/* Tạo kiểu cho vùng nội dung */
+.content {
+    background-color: #fff; /* Màu nền trắng cho vùng nội dung */
+    padding: 20px;
+    border-radius: 8px; /* Bo góc */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    width: 300px; /* Chiều rộng cố định */
+}
+
+/* Kiểu cho tiêu đề */
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px; /* Kích thước chữ lớn */
+    text-align: center; /* Căn giữa */
+    color: #4CAF50; /* Màu xanh lá cây */
+}
+
+/* Kiểu cho các trường nhập liệu */
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    width: 100%; /* Chiều rộng đầy đủ */
+    padding: 10px; /* Khoảng cách bên trong */
+    margin-bottom: 15px; /* Khoảng cách giữa các trường */
+    border: 1px solid #ccc; /* Đường viền nhẹ */
+    border-radius: 4px; /* Bo góc */
+    font-size: 16px; /* Kích thước chữ */
+}
+
+/* Kiểu cho nút */
+button {
+    width: 100%; /* Chiều rộng đầy đủ */
+    padding: 10px;
+    border: none; /* Không có đường viền */
+    border-radius: 4px; /* Bo góc */
+    font-size: 16px; /* Kích thước chữ */
+    cursor: pointer; /* Con trỏ tay khi di chuột lên nút */
+    margin-top: 10px; /* Khoảng cách giữa các nút */
+}
+
+/* Kiểu cho nút lưu */
+button:nth-child(1) {
+    background-color: #4CAF50; /* Màu nền xanh lá cây */
+    color: white; /* Màu chữ trắng */
+}
+
+/* Kiểu cho nút hủy */
+button:nth-child(2) {
+    background-color: #f44336; /* Màu nền đỏ */
+    color: white; /* Màu chữ trắng */
+}
+
+/* Hiệu ứng khi di chuột lên nút */
+button:hover {
+    opacity: 0.9; /* Giảm độ đục khi di chuột */
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Light gray background */
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #3c3f4d; /* Dark gray */
+    color: white;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin: 0 0 20px;
+    font-size: 24px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.sidebar ul li:hover {
+    background-color: #4c4f60; /* Darker gray on hover */
+}
+
+.sidebar ul li.active {
+    background-color: #5a5e72; /* Highlight active */
+}
+
+.sidebar ul li ul {
+    padding-left: 15px;
+}
+
+.content {
+    margin-left: 270px; /* Space for the sidebar */
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h3 {
+    margin: 0;
+}
+
+.header .user-info {
+    font-size: 14px;
+    color: #777; /* Gray for user info */
+}
+
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #007bff; /* Blue focus border */
+    outline: none; /* Remove default outline */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.save-btn,
+.cancel-btn {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.save-btn {
+    background-color: #28a745; /* Green */
+}
+
+.save-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.cancel-btn {
+    background-color: #dc3545; /* Red */
+}
+
+.cancel-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .content {
+        margin-left: 0;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Light gray background */
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #3c3f4d; /* Dark gray */
+    color: white;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin: 0 0 20px;
+    font-size: 24px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.sidebar ul li:hover {
+    background-color: #4c4f60; /* Darker gray on hover */
+}
+
+.sidebar ul li.active {
+    background-color: #5a5e72; /* Highlight active */
+}
+
+.sidebar ul li ul {
+    padding-left: 15px;
+}
+
+.content {
+    margin-left: 270px; /* Space for the sidebar */
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h3 {
+    margin: 0;
+}
+
+.header .user-info {
+    font-size: 14px;
+    color: #777; /* Gray for user info */
+}
+
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #007bff; /* Blue focus border */
+    outline: none; /* Remove default outline */
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.save-btn,
+.cancel-btn {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.save-btn {
+    background-color: #28a745; /* Green */
+}
+
+.save-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.cancel-btn {
+    background-color: #dc3545; /* Red */
+}
+
+.cancel-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .content {
+        margin-left: 0;
+    }
+}
+/* Reset some default styles */
+body, h2, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light background color */
+    color: #333; /* Dark text color */
+}
+
+/* Container for the login/registration form */
+.login-container {
+    max-width: 400px; /* Set a maximum width for the form */
+    margin: 50px auto; /* Center the form vertically and horizontally */
+    padding: 20px; /* Add padding inside the container */
+    background-color: #ffffff; /* White background for the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Heading styling */
+h2 {
+    text-align: center; /* Center the heading */
+    margin-bottom: 20px; /* Space below the heading */
+    color: #007bff; /* Bootstrap primary color */
+}
+
+/* Input group styling */
+.input-group {
+    margin-bottom: 15px; /* Space between input groups */
+}
+
+/* Label styling */
+label {
+    display: block; /* Make labels block elements */
+    margin-bottom: 5px; /* Space below labels */
+    font-weight: bold; /* Bold font for labels */
+}
+
+/* Input field styling */
+input[type="text"],
+input[type="password"],
+input[type="tel"] { /* Added phone input type */
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding inside inputs */
+    border: 1px solid #ced4da; /* Light border color */
+    border-radius: 5px; /* Rounded corners */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+/* Focus effect for input fields */
+input:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove outline */
+}
+
+/* Button styling */
+button {
+    width: 100%; /* Full width button */
+    padding: 10px; /* Padding inside button */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Error message styling */
+.text-danger {
+    color: red; /* Red text for error messages */
+    font-weight: bold; /* Bold font */
+}
+
+/* Link styling */
+a {
+    color: #007bff; /* Link color */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Block for spacing */
+    margin-top: 10px; /* Space above the link */
+}
+
+/* Link hover effect */
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}

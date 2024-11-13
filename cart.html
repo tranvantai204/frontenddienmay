@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng</title>
+    <link rel="stylesheet" href="StylesA.css">
+</head>
+
+<body>
+    <style>
+        /* Styles for the cart section */
+        
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+            /* Remove border for the last item */
+        }
+        
+        .cart-item img {
+            width: 80px;
+            /* Set a fixed width for product images */
+            height: auto;
+            /* Maintain aspect ratio */
+        }
+        
+        .cart-item h4 {
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .cart-item p {
+            margin: 0;
+            color: #555;
+        }
+        
+        .cart-summary {
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f1f1f1;
+            text-align: right;
+            /* Align the total amount to the right */
+        }
+        
+        .cart-summary h4 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .cart-summary button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            /* Green color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .cart-summary button:hover {
+            background-color: #218838;
+            /* Darker green on hover */
+        }
+    </style>
+    <!-- HEADER -->
+    <header>
+        <div id="top-header">
+            <ul>
+                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
+                <li><a href="#">Email: email@email.com</a></li>
+                <li><a href="#">Địa chỉ</a></li>
+            </ul>
+            <ul>
+                <li><a href="informationuser.html">Tài khoản của tôi</a></li>
+            </ul>
+        </div>
+
+        <div id="header">
+            <div class="logo">
+                <a href="#"><img src="img/logo.png" alt="Logo"></a>
+            </div>
+            <div class="search-bar">
+                <form>
+                    <input type="text" placeholder="Tìm kiếm...">
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+            <div class="cart">
+                <a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Trang chủ</a></li>
+            <li><a href="voucher.html">Khuyến mãi</a></li>
+            <li><a href="Laptop.html">Laptop</a></li>
+            <li><a href="Smartphone.html">Smartphone</a></li>
+            <li><a href="photograph.html">Máy ảnh</a></li>
+            <li><a href="spareparts.html">Phụ kiện</a></li>
+        </ul>
+    </nav>
+
+    <!-- SECTION: GIỎ HÀNG -->
+    <section>
+        <h3>Giỏ Hàng Của Bạn</h3>
+        <div class="cart-items" id="cartItems">
+            <!-- Các sản phẩm sẽ được thêm vào đây bằng JavaScript -->
+        </div>
+
+        <div class="cart-summary" id="cartSummary">
+            <h4>Tổng Giá Trị Đơn Hàng: <strong id="totalAmount">$0.00</strong></h4>
+            <a href="payment.html"><button>Tiến Hành Thanh Toán</button></a>
+        </div>
+    </section>
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 Trang Bán Hàng. </p>
+    </footer>
+    <script src="cart.js"></script>
+</body>
+
+</html>

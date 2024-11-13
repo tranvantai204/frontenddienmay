@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giảm Giá & Voucher</title>
+    <link rel="stylesheet" href="StylesA.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- Thêm FontAwesome cho biểu tượng giỏ hàng -->
+    <style>
+        .cart-animation {
+            position: absolute;
+            width: 50px;
+            /* Kích thước hình ảnh sản phẩm */
+            height: 50px;
+            /* Kích thước hình ảnh sản phẩm */
+            pointer-events: none;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            opacity: 1;
+            z-index: 1000;
+        }
+        
+        .cart-animation.fade-out {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div id="top-header">
+            <ul>
+                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
+                <li><a href="#">Email: email@email.com</a></li>
+                <li><a href="#">Địa chỉ</a></li>
+            </ul>
+            <ul>
+                <li><a href="infomationuser.html">Tài khoản của tôi</a></li>
+                <li><a href="login.html">Đăng xuất</a></li>
+            </ul>
+        </div>
+
+        <div id="header">
+            <div class="logo">
+                <a href="#"><img src="img/logo.png" alt="Logo"></a>
+            </div>
+            <div class="search-bar">
+                <form>
+                    <input type="text" placeholder="Tìm kiếm...">
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+            <div class="cart">
+                <a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Trang chủ</a></li>
+            <li><a href="voucher.html">Khuyến mãi</a></li>
+            <li><a href="Laptop.html">Laptop</a></li>
+            <li><a href="Smartphone.html">Smartphone</a></li>
+            <li><a href="photograph.html">Máy ảnh</a></li>
+            <li><a href="spareparts.html">Phụ kiện</a></li>
+        </ul>
+    </nav>
+
+    <!-- SECTION: VOUCHER & SẢN PHẨM GIẢM GIÁ -->
+    <section>
+        <h3>Voucher Giảm Giá</h3>
+        <div class="voucher-list">
+            <div class="voucher">
+                <h4>Voucher 10% Giảm Giá cho Đơn Hàng Trên 500.000 VNĐ</h4>
+                <p>Mã: <strong>VOUCHER10</strong></p>
+                <p>Hạn sử dụng: 30/12/2024</p>
+            </div>
+            <div class="voucher">
+                <h4>Voucher Giảm Giá 20% cho Sản Phẩm Chọn Lọc</h4>
+                <p>Mã: <strong>VOUCHER20</strong></p>
+                <p>Hạn sử dụng: 31/12/2024</p>
+            </div>
+        </div>
+
+        <h3>Sản Phẩm Đang Giảm Giá</h3>
+        <div class="discount-products">
+            <div class="product">
+                <img src="img/laptop.jpg" alt="Laptop">
+                <h4>Laptop XYZ</h4>
+                <p class="original-price">Giá gốc: 15.000.000 VNĐ</p>
+                <p class="discount-price">Giá hiện tại: 12.000.000 VNĐ</p>
+                <button class="add-to-cart" data-name="Laptop XYZ" data-price="12000000" data-image="img/laptop.jpg">Mua ngay</button>
+            </div>
+            <div class="product">
+                <img src="img/smartphone.jpg " alt="Smartphone">
+                <h4>Smartphone ABC</h4>
+                <p class="original-price">Giá gốc: 10.000.000 VNĐ</p>
+                <p class="discount-price">Giá hiện tại: 8.000.000 VNĐ</p>
+                <button class="add-to-cart" data-name="Smartphone ABC" data-price="8000000" data-image="img/smartphone.jpg">Mua ngay</button>
+            </div>
+            <div class="product">
+                <img src="img/camera.jpg" alt="Máy ảnh">
+                <h4>Máy ảnh DEF</h4>
+                <p class="original-price">Giá gốc: 5.000.000 VNĐ</p>
+                <p class="discount-price">Giá hiện tại: 4.000.000 VNĐ</p>
+                <button class="add-to-cart" data-name="Máy ảnh DEF" data-price="4000000" data-image="img/camera.jpg">Mua ngay</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 Trang Bán Hàng.</p>
+    </footer>
+
+    <script>
+        // Hàm thêm sản phẩm vào giỏ hàng
+        function addToCart(name, price, image) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const product = {
+                name: name,
+                price: price,
+                image: image,
+                quantity: 1
+            };
+
+            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+            const existingProductIndex = cart.findIndex(item => item.name === name);
+            if (existingProductIndex > -1) {
+                // Nếu có, tăng số lượng
+                cart[existingProductIndex].quantity += 1;
+            } else {
+                // Nếu không, thêm sản phẩm mới vào giỏ hàng
+                cart.push(product);
+            }
+
+            // Lưu giỏ hàng vào localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Cập nhật số lượng giỏ hàng
+            let cartCount = JSON.parse(localStorage.getItem('cart')).length;
+            document.getElementById("cart-count").innerText = cartCount;
+        }
+
+        // Thêm sự kiện click cho tất cả các nút "Mua ngay"
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const productName = this.getAttribute('data-name');
+                const productPrice = this.getAttribute('data-price');
+                const productImage = this.getAttribute('data-image');
+                addToCart(productName, productPrice, productImage);
+
+                // Thêm hiệu ứng đưa vào giỏ hàng
+                const cartIcon = document.querySelector(".cart i");
+                const productImg = this.parentNode.querySelector("img");
+                const cartAnimation = productImg.cloneNode(true);
+                cartAnimation.classList.add("cart-animation");
+                cartAnimation.style.position = "absolute";
+                cartAnimation.style.top = event.clientY + "px";
+                cartAnimation.style.left = event.clientX + "px";
+                document.body.appendChild(cartAnimation);
+
+                setTimeout(() => {
+                    cartAnimation.style.transform = "translateX(" + (cartIcon.offsetLeft - event.clientX) + "px) translateY(" + (cartIcon.offsetTop - event.clientY) + "px)";
+                }, 0);
+
+                setTimeout(() => {
+                    cartAnimation.classList.add("fade-out");
+                }, 400);
+
+                setTimeout(() => {
+                    cartAnimation.remove();
+                }, 500);
+            });
+        });
+    </script>
+</body>
+
+</html>

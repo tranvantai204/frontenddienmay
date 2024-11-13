@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../CuaHangDT"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "fontenddt",
+		"liveServer.settings.port": 5501
+	}
+}

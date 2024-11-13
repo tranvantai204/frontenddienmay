@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartphone</title>
+    <link rel="stylesheet" href="StylesA.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+        .product {
+            display: inline-block;
+            width: 200px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div id="top-header">
+            <ul>
+                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
+                <li><a href="#">Email: email@email.com</a></li>
+                <li><a href="#">Địa chỉ</a></li>
+            </ul>
+            <ul>
+                <li><a href="infomationuser.html">Tài khoản của tôi</a></li>
+                <li><a href="login.html">Đăng xuất</a></li>
+            </ul>
+        </div>
+
+        <div id="header">
+            <div class="logo">
+                <a href="#"><img src="img/logo.png" alt="Logo"></a>
+            </div>
+            <div class="search-bar">
+                <form onsubmit="return false;">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm..." oninput="searchProducts()">
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+            <div class="cart">
+                <a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Trang chủ</a></li>
+            <li><a href="voucher.html">Khuyến mãi</a></li>
+            <li><a href="Laptop.html">Laptop</a></li>
+            <li><a href="Smartphone.html">Smartphone</a></li>
+            <li><a href="photograph.html">Máy ảnh</a></li>
+            <li><a href="spareparts.html">Phụ kiện</a></li>
+        </ul>
+    </nav>
+
+    <!-- SECTION: SẢN PHẨM SMARTPHONE -->
+    <section>
+        <h3>Sản phẩm Smartphone</h3>
+
+        <!-- FILTERS -->
+        <div class="filters">
+            <h4>Bộ lọc</h4>
+            <form id="filter-form">
+                <label for="price">Giá:</label>
+                <select id="price" name="price">
+                    <option value="all">Tất cả</option>
+                    <option value="0-300">Dưới $300</option>
+                    <option value="300-600">$300 - $600</option>
+                    <option value="600-900">$600 - $900</option>
+                    <option value="900+">Trên $900</option>
+                </select>
+                <br>
+                <label for="brand">Hãng:</label>
+                <select id="brand" name="brand">
+                    <option value="all">Tất cả</option>
+                    <option value="apple">Apple</option>
+                    <option value="samsung">Samsung</option>
+                    <option value="xiaomi">Xiaomi</option>
+                    <option value="oppo">Oppo</option>
+                </select>
+            </form>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="products">
+            <div class="product" data-price="799" data-brand="apple">
+                <img src="img/smartphone01.png" alt="Smartphone 1">
+                <h4><a href="#">iPhone 13</a></h4>
+                <p class="product-price">Giá: $799. 00 <del>$899.00</del></p>
+                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+            </div>
+            <div class="product" data-price="999" data-brand="samsung">
+                <img src="img/smartphone02.png" alt="Smartphone 2">
+                <h4><a href="#">Samsung Galaxy S21</a></h4>
+                <p class="product-price">Giá: $999.00 <del>$1099.00</del></p>
+                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+            </div>
+            <div class="product" data-price="749" data-brand="xiaomi">
+                <img src="img/smartphone03.png" alt="Smartphone 3">
+                <h4><a href="#">Xiaomi Mi 11</a></h4>
+                <p class="product-price">Giá: $749.00 <del>$799.00</del></p>
+                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+            </div>
+            <div class="product" data-price="899" data-brand="oppo">
+                <img src="img/smartphone04.png" alt="Smartphone 4">
+                <h4><a href="#">Oppo Find X3</a></h4>
+                <p class="product-price">Giá: $899.00 <del>$999.00</del></p>
+                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+            </div>
+            <div class="product" data-price="949" data-brand="samsung">
+                <img src="img/smartphone05.png" alt="Smartphone 5">
+                <h4><a href="#">Samsung Galaxy Note 20</a></h4>
+                <p class="product-price">Giá: $949.00 <del>$1099.00</del></p>
+                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+            </div>
+            <div class="product" data-price="199" data-brand="xiaomi">
+                <img src="img/smartphone06.png" alt="Smartphone 6">
+                <h4><a href="#">Xiaomi Redmi Note 10</a></h4>
+                <p class="product-price">Giá: $199.00 <del>$249.00</del></p>
+                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 Trang Bán Hàng. </p>
+    </footer>
+
+    <script>
+        let cartCount = 0;
+
+        function addToCart(event) {
+            event.preventDefault();
+            const productName = event.target.parentNode.querySelector("h4 a").innerText;
+            const productPrice = event.target.parentNode.querySelector(".product-price").innerText;
+
+            // Cập nhật số lượng giỏ hàng
+            cartCount++;
+            document.getElementById("cart-count").innerText = cartCount;
+
+            // Thêm sản phẩm vào giỏ hàng trong LocalStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({
+                name: productName,
+                price: productPrice
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Thêm hiệu ứng đưa vào giỏ hàng
+            const cartIcon = document.querySelector(".cart i");
+            const productImg = event.target.parentNode.querySelector("img");
+            const cartAnimation = productImg.cloneNode(true);
+            cartAnimation.classList.add("cart-animation");
+            cartAnimation.style.position = "absolute";
+            cartAnimation.style.top = event.clientY + "px";
+            cartAnimation.style.left = event.clientX + "px";
+            document.body.appendChild(cartAnimation);
+
+            setTimeout(() => {
+                cartAnimation.style.transform = "translateX(" + (cartIcon.offsetLeft - event.clientX) + "px) translateY(" + (cartIcon.offsetTop - event.clientY) + "px)";
+            }, 0);
+
+            setTimeout(() => {
+                cartAnimation.remove();
+            }, 500);
+        }
+
+        // Lọc sản phẩm
+        document.getElementById('filter-form').addEventListener('change', filterProducts);
+
+        function filterProducts() {
+            const priceFilter = document.getElementById('price').value;
+            const brandFilter = document.getElementById('brand').value;
+            const products = document.querySelectorAll('.product');
+
+            products.forEach(product => {
+                const productPrice = parseInt(product.getAttribute('data-price'));
+                const productBrand = product.getAttribute('data-brand');
+
+                let priceMatch = false;
+                let brandMatch = false;
+
+                // Price filtering logic
+                if (priceFilter === 'all') {
+                    priceMatch = true;
+                } else if (priceFilter === '0-300' && productPrice < 300) {
+                    priceMatch = true;
+                } else if (priceFilter === '300-600' && productPrice >= 300 && productPrice < 600) {
+                    priceMatch = true;
+                } else if (priceFilter === '600-900' && productPrice >= 600 && productPrice < 900) {
+                    priceMatch = true;
+                } else if (priceFilter === '900+' && productPrice >= 900) {
+                    priceMatch = true;
+                }
+
+                // Brand filtering logic
+                if (brandFilter === 'all') {
+                    brandMatch = true;
+                } else if (productBrand === brandFilter) {
+                    brandMatch = true;
+                }
+
+                // Hiển thị hoặc ẩn sản phẩm dựa trên bộ lọc
+                if (priceMatch && brandMatch) {
+                    product.classList.remove('hidden');
+                } else {
+                    product.classList.add('hidden');
+                }
+            });
+        }
+
+        function searchProducts() {
+            const searchInput = document.getElementById("search-input");
+            const products = document.querySelectorAll(".product");
+            const searchValue = searchInput.value.toLowerCase();
+
+            products.forEach((product) => {
+                const productName = product.querySelector("h4 a").innerText.toLowerCase();
+                if (productName.includes(searchValue)) {
+                    product.style.display = "block";
+                } else {
+                    product.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

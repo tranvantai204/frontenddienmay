@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Sản Phẩm</title>
+    <link rel="stylesheet" href="@sweetalert2/themes/dark/dark.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <style>
+        /* Body and General Styling */
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h2 {
+            font-family: 'Roboto Mono', monospace;
+            color: #4a3d93;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #4a3d93;
+            box-shadow: 0 0 5px rgba(74, 61, 147, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4a3d93;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2600ff;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: green;
+        }
+        .huy {
+            background-color: #b10a04;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Thêm Sản Phẩm</h2>
+
+    <form id="addProductForm">
+        <label for="product_name">Tên sản phẩm:</label>
+        <input type="text" id="product_name" name="product_name" required>
+
+        <label for="description">Mô tả:</label>
+        <input type="text" id="description" name="description" required>
+
+        <label for="price">Giá:</label>
+        <input type="number" id="price" name="price" required>
+
+        <label for="stock">Số lượng:</label>
+        <input type="number" id="stock" name="stock" required>
+
+        <label for="category_id">Danh mục:</label>
+        <select id="category_id" name="category_id" required>
+            <!-- Categories will be populated here -->
+        </select>
+
+        <label for="supplier_id">Nhà cung cấp:</label>
+        <select id="supplier_id" name="supplier_id" required>
+            <!-- Suppliers will be populated here -->
+        </select>
+
+        <label for="thumbnail_image">Hình ảnh Thumbnail:</label>
+        <input type="file" id="thumbnail_image" name="thumbnail_image" required>
+
+        <label for="image_detail1">Hình ảnh Chi Tiết 1:</label>
+        <input type="file" id="image_detail1" name="image_detail1">
+
+        <label for="image_detail2">Hình ảnh Chi Tiết 2:</label>
+        <input type="file" id="image_detail2" name="image_detail2">
+
+        <label for="image_detail3">Hình ảnh Chi Tiết 3:</label>
+        <input type="file" id="image_detail3" name="image_detail3">
+
+        <button type="submit">Thêm Sản Ph ẩm</button>
+        <button type="button" class="huy" onclick="location.href='productad.html'">Hủy</button>
+        
+    </form>
+    <p id="message"></p>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCategories();
+            loadSuppliers();
+
+            document.getElementById('addProductForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+
+                var formData = new FormData();
+                formData.append('product_name', document.getElementById('product_name').value);
+                formData.append('description', document.getElementById('description').value);
+                formData.append('price', document.getElementById('price').value);
+                formData.append('stock', document.getElementById('stock').value);
+                formData.append('category_id', document.getElementById('category_id').value);
+                formData.append('supplier_id', document.getElementById('supplier_id').value);
+                formData.append('thumbnail_image', document.getElementById('thumbnail_image').files[0]);
+                formData.append('image_detail1', document.getElementById('image_detail1').files[0]);
+                formData.append('image_detail2', document.getElementById('image_detail2').files[0]);
+                formData.append('image_detail3', document.getElementById('image_detail3').files[0]);
+
+                var token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Không tìm thấy token. Vui lòng đăng nhập lại.');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                fetch('http://localhost/CuaHangDT/api/sanpham/create.php', {
+    method: 'POST',
+    headers: { 
+        'Authorization': 'Bearer ' + token 
+    },
+    body: formData
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok: ' + response.statusText);
+    }
+    return response.json();
+})
+.then(data => {
+    console.log(data); // Kiểm tra dữ liệu trả về từ API
+    if (data.message && data.message.trim() === "Done") {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công!',
+            text: 'Sản phẩm đã được thêm thành công!',
+            confirmButtonText: 'OK'
+        });
+        document.getElementById('addProductForm').reset(); // Reset form
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Có lỗi!',
+            text: data.message || 'Đã xảy ra lỗi khi thêm sản phẩm.',
+            confirmButtonText: 'OK'
+        });
+    }
+})
+.catch(error => {
+    console.error('Error adding product:', error);
+    Swal.fire({
+        icon: 'error',
+        title: 'Có lỗi!',
+        text: 'Đã xảy ra lỗi khi thêm sản phẩm: ' + error.message,
+        confirmButtonText: 'OK'
+    });
+});
+            })
+        });
+
+        function loadCategories() {
+            fetch('http://localhost/CuaHangDT/api/danhmucsp/read.php')
+            .then(response => response.json())
+            .then(data => {
+                let categorySelect = document.getElementById('category_id');
+                data.data.forEach(category => {
+                    let option = document.createElement('option');
+                    option.value = category.category_id;
+                    option.text = category.category_name;
+                    categorySelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading categories:', error));
+        }
+
+        function loadSuppliers() {
+            fetch('http://localhost/CuaHangDT/api/nhacungcap/read.php')
+            .then(response => response.json())
+            .then(data => {
+                let supplierSelect = document.getElementById('supplier_id');
+                data.data.forEach(supplier => {
+                    let option = document.createElement('option');
+                    option.value = supplier.supplier_id;
+                    option.text = supplier.supplier_name;
+                    supplierSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading suppliers:', error));
+        }
+    </script>
+</body>
+</html>

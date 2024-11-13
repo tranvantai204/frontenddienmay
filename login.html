@@ -1,0 +1,485 @@
+<!DOCTYPE html ```html
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.1/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f6f5f7;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: -20px 0 50px;
+            background-image: url('https://codetheworld.io/wp-content/uploads/2024/08/bg-scaled.jpg');
+            background-size: cover;
+        }
+        
+        h1 {
+            font-weight: bold;
+            margin: 0;
+            color: beige;
+        }
+        
+        p {
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 20px;
+            letter-spacing: 0.5px;
+            margin: 20px 0 30px;
+        }
+        
+        span {
+            font-size: 12px;
+            color: beige;
+        }
+        
+        a {
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            margin: 15px 0;
+        }
+        
+        .container {
+            border-radius: 10px;
+            box-shadow: 0 14px 28px #00000040, 0 10px 10px #00000038;
+            position: fixed;
+            overflow: hidden;
+            width: 768px;
+            max-width: 100%;
+            min-height: 480px;
+            opacity: 0.8;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        
+        form {
+            background: #2d3436;
+            display: flex;
+            flex-direction: column;
+            padding: 0 50px;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .social-container {
+            margin: 20px 0;
+        }
+        
+        .social-container a {
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 5px;
+            height: 40px;
+            width: 40px;
+        }
+        
+        input {
+            width: 240px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #fff;
+            font-family: 'Play', sans-serif;
+            font-size: 16px;
+            padding: 10px 0;
+            transition: border 0.5s;
+            outline: none;
+            color: #fff;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+        
+        button {
+            border-radius: 20px;
+            border: 2px solid #ff4b2b;
+            background: #ff4b2b;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 12px 45px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 80ms ease-in;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        button:focus {
+            outline: none;
+        }
+        
+        button.ghost {
+            background: transparent;
+            border-color: #ff4b2b;
+        }
+        
+        .form-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition: all 0.6s ease-in-out;
+        }
+        
+        .sign-in-container {
+            left: 0;
+            width: 50%;
+            z-index: 2;
+        }
+        
+        .sign-up-container {
+            left: 0;
+            width: 50%;
+            z-index: 1;
+            opacity: 0;
+        }
+        
+        .overlay-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+            z-index: 100;
+        }
+        
+        .overlay {
+            height: 100%;
+            width: 200%;
+            background: linear-gradient(to right, #ff4b2b, #ff416c) no-repeat 0 0 / cover;
+            color: #fff;
+            position: absolute;
+            left: -100%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+        
+        .overlay-panel {
+            position: absolute;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 40px;
+            height: 100%;
+            width: 50%;
+            text-align: center;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+        
+        .overlay-right {
+            right: 0;
+            transform: translateX(0);
+        }
+        
+        .overlay-left {
+            transform: translateX(-20%);
+        }
+        
+        .container.right-panel-active .sign-in-container {
+            transform: translateX(100%);
+        }
+        
+        .container.right-panel-active .overlay-container {
+            transform: translateX(-100%);
+        }
+        
+        .container.right-panel-active .sign-up-container {
+            transform: translateX(100%);
+            opacity: 1;
+            z-index: 5;
+        }
+        
+        .container.right-panel-active .overlay {
+            transform: translateX(50%);
+        }
+        
+        .container.right-panel-active .overlay-left {
+            transform: translateX(0);
+        }
+        
+        .container.right-panel-active .overlay-right {
+            transform: translateX(20%);
+        }
+        /* Add styles for toast notification */
+        
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .toast.show {
+            display: block;
+        }
+        
+        .swal2-popup {
+            z-index: 9999 !important;
+        }
+        
+        .swal2-container {
+            z-index: 9999 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form id="signUpForm">
+                <h1>Tạo Tài Khoản</h1>
+                <span>Sử dụng email để đăng ký</span>
+                <input type="text" id="name" placeholder="Tên" autocomplete="off" required>
+                <input type="email" id="email" placeholder="Email" autocomplete="off" required>
+                <input type="text" id="phone" placeholder="Số điện thoại" autocomplete="off" required>
+                <input type="password" id="password" placeholder="Mật khẩu" autocomplete="off" required>
+                <button type="submit" id="signUp">Đăng Ký</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form id="signInForm">
+                <h1>Đăng Nhập</h1>
+                <span>Sử dụng Email của bạn</span>
+                <input type="email" id="signInEmail" placeholder="Email" autocomplete="off" required>
+                <input type="password" id="signInPassword" placeholder="Mật khẩu" autocomplete="off" required>
+                <a href="#" id="forgotPassword">Quên mật khẩu?</a>
+                <button type="submit" id="signIn">Đăng Nhập</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Chào Mừng Trở Lại</h1>
+                    <p>Để giữ liên lạc với chúng tôi, vui lòng đăng nhập bằng thông tin cá nhân của bạn</p>
+                    <button class="ghost" id="signInButton">Đăng Nhập</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Xin Chào, Bạn Bè</h1>
+                    <p>Nhập thông tin cá nhân của bạn và bắt đầu hành trình cùng chúng tôi</p>
+                    <button class="ghost" id="signUpButton">Đăng Ký</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast" id="toast"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <script>
+        // Lấy các phần tử DOM cần thiết
+        const signUpForm = document.getElementById('signUpForm');
+        const signInForm = document.getElementById('signInForm');
+        const signUpButtonOverlay = document.getElementById('signUpButton');
+        const signInButtonOverlay = document.getElementById('signInButton');
+        const container = document.getElementById('container');
+        const toast = document.getElementById('toast');
+
+        // Hàm hiển thị thông báo
+        function showToast(message, duration = 3000) {
+            toast.innerHTML = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // Thêm hàm kiểm tra email hợp lệ
+        function isValidEmail(email) {
+            // Regex để kiểm tra email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            // Kiểm tra định dạng email cơ bản
+            if (!emailRegex.test(email)) {
+                return false;
+            }
+            
+            // Kiểm tra tên miền email
+            const domain = email.split('@')[1];
+            const validDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com'];
+            
+            return validDomains.includes(domain.toLowerCase());
+        }
+
+        // Đăng ký người dùng
+        document.getElementById('signUpForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('Form submitted');
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            // Kiểm tra các trường bắt buộc
+            if (!name || !email || !phone || !password) {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Vui lòng điền đầy đủ thông tin!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return;
+            }
+
+            // Kiểm tra email hợp lệ
+            if (!isValidEmail(email)) {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Email không hợp lệ!",
+                    text: "Vui lòng sử dụng email từ Gmail, Yahoo, Outlook hoặc Hotmail",
+                    showConfirmButton: true
+                });
+                return;
+            }
+
+            // Tiếp tục với phần fetch như cũ
+            fetch('http://localhost/CuaHangDT/api/nguoiDung/register.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: name,
+                    email: email,
+                    phone_number: phone,
+                    password: password
+                })
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response:', text);
+                try {
+                    const data = JSON.parse(text);
+                    if (data.message === "User was created.") {
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Đăng ký thành công! Vui lòng xác minh email",
+                            showConfirmButton: false,
+                            timer: 5000
+                        });
+                        document.getElementById('signUpForm').reset();
+                        container.classList.remove('right-panel-active');
+                    } else {
+                        Swal.fire({
+                            position: "top",
+                            icon: "error",
+                            title: "Đăng ký thất bại",
+                            text: data.message || 'Không có phản hồi từ server',
+                            showConfirmButton: true
+                        });
+                    }
+                } catch (e) {
+                    console.error('Parse error:', e);
+                    Swal.fire({
+                        position: "top",
+                        icon: "error",
+                        title: "Lỗi",
+                        text: 'Lỗi xử lý phản hồi từ server: ' + text,
+                        showConfirmButton: true
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error details:', error);
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Lỗi",
+                    text: 'Đã xảy ra lỗi khi đăng ký: ' + error.message,
+                    showConfirmButton: true
+                });
+            });
+        });
+
+        // Đăng nhập người dùng
+        signInForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('signInEmail').value.trim();
+            const password = document.getElementById('signInPassword').value.trim();
+
+            fetch('http://localhost/CuaHangDT/api/nguoiDung/login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.jwt) {
+                   // Ví dụ lưu token sau khi đăng nhập
+                   localStorage.setItem('token', data.jwt); // Lưu token vào localStorage
+                    localStorage.setItem('jwt', data.jwt); // Lưu token vào localStorage
+
+                    // Giải mã token để lấy thông tin người dùng
+                    const decoded = JSON.parse(atob(data.jwt.split('.')[1])); // Giải mã payload của token
+
+                    // Hiển thị email trên giao diện
+
+                    if (data.data && data.data.role === 'admin') {
+                        window.location.href = 'display.html';
+                    } else {
+                        window.location.href = 'home.html';
+                    }
+                } else {
+                    alert('Đăng nhập thất bại: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã xảy ra lỗi, vui lòng thử lại!');
+            });
+        });
+
+
+        // Xử lý sự kiện cho các nút chuyển đổi giữa đăng ký và đăng nhập
+        signUpButtonOverlay.addEventListener('click', () => {
+            container.classList.add('right-panel-active'); // Chuyển sang giao diện đăng ký
+        });
+
+        signInButtonOverlay.addEventListener('click', () => {
+            container.classList.remove('right-panel-active'); // Quay lại giao diện đăng nhập
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phụ kiện</title>
+    <link rel="stylesheet" href="StylesA.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+        .product {
+            display: inline-block;
+            width: 200px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div id="top-header">
+            <ul>
+                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
+                <li><a href="#">Email: email@email.com</a></li>
+                <li><a href="#">Địa chỉ</a></li>
+            </ul>
+            <ul>
+                <li><a href="infomationuser.html">Tài khoản của tôi</a></li>
+                <li><a href="login.html">Đăng xuất</a></li>
+            </ul>
+        </div>
+
+        <div id="header">
+            <div class="logo">
+                <a href="#"><img src="img/logo.png" alt="Logo"></a>
+            </div>
+            <div class="search-bar">
+                <form onsubmit="return false;">
+                    <input type="text" id="search-input" placeholder="Tìm kiếm..." oninput="searchProducts()">
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+            <div class="cart">
+                <a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Trang chủ</a></li>
+            <li><a href="voucher.html">Khuyến mãi</a></li>
+            <li><a href="Laptop.html">Laptop</a></li>
+            <li><a href="Smartphone.html">Smartphone</a></li>
+            <li><a href="photograph.html">Máy ảnh</a></li>
+            <li><a href="spareparts.html">Phụ kiện</a></li>
+        </ul>
+    </nav>
+
+    <!-- SECTION: SẢN PHẨM PHỤ KIỆN -->
+    <section>
+        <h3>Sản phẩm Phụ kiện</h3>
+
+        <!-- FILTERS -->
+        <div class="filters">
+            <h4>Bộ lọc</h4>
+            <form id="filter-form">
+                <label for="accessory-type">Loại phụ kiện:</label>
+                <select id="accessory-type" name="accessory-type">
+                    <option value="all">Tất cả</option>
+                    <option value="smartphone">Phụ kiện cho Smartphone</option>
+                    <option value="laptop">Phụ kiện cho Laptop</option>
+                    <option value="camera">Phụ kiện cho Máy ảnh</option>
+                </select>
+                <br>
+                <label for="price">Giá:</label>
+                <select id="price" name="price">
+                    <option value="all">Tất cả</option>
+                    <option value="0-50">Dưới $50</option>
+                    <option value="50-100">$50 - $100</option>
+                    <option value="100-200">$100 - $200</option>
+                    <option value="200+">Trên $200</option>
+                </select>
+                <br>
+                <label for="brand">Hãng:</label>
+                <select id="brand" name="brand">
+                    <option value="all">Tất cả</option>
+                    <option value="apple">Apple</option>
+                    <option value="samsung">Samsung</option>
+                    <option value="logitech">Logitech</option>
+                    <option value="canon">Canon</option>
+                </select>
+                <br>
+                <button type="submit">Lọc</button>
+            </form>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="products" id="product-list">
+            <div class="product" data-accessory-type="smartphone" data-price="25" data-brand="apple">
+                <img src="img/accessory01.png" alt="Phụ kiện 1">
+                <h4><a href="#">Tai nghe Bluetooth</a></h4>
+                <p class="product-price">Giá: $25.00 <del>$30.00</del></p>
+                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+            </div>
+            <div class="product" data-accessory-type="laptop" data-price="35" data-brand="logitech">
+                <img src="img/accessory02.png" alt="Phụ kiện 2">
+                <h4><a href="#">Sạc dự phòng 10000mAh</a></h4>
+                <p class="product-price">Giá: $35.00 <del>$40.00</del></p>
+                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+            </div>
+            <!-- Thêm nhiều sản phẩm khác tại đây -->
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2024 Trang Bán Hàng. </p>
+    </footer>
+
+    <script>
+        let cartCount = 0;
+
+        function addToCart(event) {
+            event.preventDefault();
+            const productName = event.target.parentNode.querySelector("h4 a").innerText;
+            const productPrice = event.target.parentNode.querySelector(".product-price").innerText;
+
+            // Cập nhật số lượng giỏ hàng
+            cartCount++;
+            document.getElementById("cart-count").innerText = cartCount;
+
+            // Thêm sản phẩm vào giỏ hàng trong LocalStorage
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({
+                name: productName,
+                price: productPrice
+            });
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Thêm hiệu ứng đưa vào giỏ hàng
+            const cartIcon = document.querySelector(".cart i");
+            const productImg = event.target.parentNode.querySelector("img");
+            const cartAnimation = productImg.cloneNode(true);
+            cartAnimation.classList.add("cart-animation");
+            cartAnimation.style.position = "absolute";
+            cartAnimation.style.top = event.clientY + "px";
+            cartAnimation.style.left = event.clientX + "px";
+            document.body.appendChild(cartAnimation);
+
+            setTimeout(() => {
+                cartAnimation.style.transform = "translateX(" + (cartIcon.offsetLeft - event.clientX) + "px) translateY(" + (cartIcon.offsetTop - event.clientY) + "px)";
+            }, 0);
+
+            setTimeout(() => {
+                cartAnimation.remove();
+            }, 500);
+        }
+
+        // Lọc sản phẩm
+        document.getElementById('filter-form').addEventListener('change', filterProducts);
+
+        function filterProducts() {
+            const accessoryTypeFilter = document.getElementById('accessory-type').value;
+            const priceFilter = document.getElementById('price').value;
+            const brandFilter = document.getElementById('brand').value;
+            const products = document.querySelectorAll('.product');
+
+            products.forEach(product => {
+                const productAccessoryType = product.getAttribute('data-accessory-type');
+                const productPrice = parseInt(product.getAttribute('data-price'));
+                const productBrand = product.getAttribute('data-brand');
+
+                let accessoryTypeMatch = false;
+                let priceMatch = false;
+                let brandMatch = false;
+
+                // Accessory type filtering logic
+                if (accessoryTypeFilter === 'all') {
+                    accessoryTypeMatch = true;
+                } else if (productAccessoryType === accessoryTypeFilter) {
+                    accessoryTypeMatch = true;
+                }
+
+                // Price filtering logic
+                if (priceFilter === 'all') {
+                    priceMatch = true;
+                } else if (priceFilter === '0-50' && productPrice < 50) {
+                    priceMatch = true;
+                } else if (priceFilter === '50-100' && productPrice >= 50 && productPrice < 100) {
+                    priceMatch = true;
+                } else if (priceFilter === '100-200' && productPrice >= 100 && productPrice < 200) {
+                    priceMatch = true;
+                } else if (priceFilter === '200+' && productPrice >= 200) {
+                    priceMatch = true;
+                }
+
+                // Brand filtering logic
+                if (brandFilter === 'all') {
+                    brandMatch = true;
+                } else if (productBrand === brandFilter) {
+                    brandMatch = true;
+                }
+
+                // Hiển thị hoặc ẩn sản phẩm dựa trên bộ lọc
+                if (accessoryTypeMatch && priceMatch && brandMatch) {
+                    product.classList.remove('hidden');
+                } else {
+                    product.classList.add('hidden');
+                }
+            });
+        }
+
+        // Tìm kiếm sản phẩm
+        function searchProducts() {
+            const searchInput = document.getElementById("search-input");
+            const products = document.querySelectorAll(".product");
+            const searchValue = searchInput.value.toLowerCase();
+
+            products.forEach((product) => {
+                const productName = product.querySelector("h4 a").innerText.toLowerCase();
+                if (productName.includes(searchValue)) {
+                    product.style.display = "inline-block"; // Hiển thị sản phẩm
+                } else {
+                    product.style.display = "none"; // Ẩn sản phẩm
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

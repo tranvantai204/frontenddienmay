@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Đơn Hàng</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <style>
+        /* Bạn có thể sử dụng các kiểu CSS từ trang trước hoặc điều chỉnh theo ý muốn */
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #001f3f;
+            color: white;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .sidebar li:hover {
+            background-color: #4a3d93;
+        }
+
+        .sidebar li.active {
+            background-color: #4a3d93;
+        }
+
+        /* Content Area */
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h3 {
+            font-family: 'Roboto Mono', monospace;
+            color: #001f3f;
+            margin-bottom: 20px;
+        }
+
+        .table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #f4f4f4;
+        }
+    </style>
+
+<div class="sidebar">
+    <h2>IPOS CALL CENTER</h2>
+    <ul>
+        <li>Dashboard</li>
+        <li onclick="location.href='productad.html'">Quản lý sản phẩm</li>
+        <li onclick="location.href='display.html'">Quản lý Tài Khoản</li>
+        <li class="active">Quản Lý Hóa Đơn</li>
+    </ul>
+</div>
+
+    <div class="content">
+        <div class="header">
+            <h3>Dashboard / Đơn hàng / Danh sách đơn hàng</h3>
+            <div class="user-info">
+                <p id="userName"></p>
+                <button id="logoutButton" class="btn btn-danger">Đăng xuất</button>
+            </div>
+        </div>
+
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer ID</th>
+                    <th>Order Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Shipping Address</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="orderTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Đăng xuất
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+
+    // Hàm fetch API để lấy danh sách đơn hàng từ database
+    function fetchOrders() {
+            // Lấy token từ localStorage
+            const token = localStorage.getItem('token');
+
+            // Kiểm tra xem token có tồn tại không
+            if (!token) {
+                console.error('Token không tồn tại. Vui lòng đăng nhập.');
+                return;
+            }
+
+            // Gửi yêu cầu đến API
+            fetch('http://localhost/CuaHangDT/api/donHang/get_allAd.php', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // Gửi token trong header
+                        'Content-Type': 'application/json' // Định dạng dữ liệu là JSON
+                    }
+                })
+                .then(response => {
+                    // Kiểm tra mã trạng thái của phản hồi
+                    if (!response.ok) {
+                        throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
+                    }
+                    return response.json(); // Chuyển đổi phản hồi sang JSON
+                })
+                .then(data => {
+                    const orderTable = document.getElementById('orderTable');
+                    orderTable.innerHTML = ''; // Xóa dữ liệu cũ
+
+                    // Kiểm tra xem có dữ liệu đơn hàng không
+                    if (data.records && data.records.length > 0) {
+                        // Duyệt qua mỗi đơn hàng và thêm vào bảng
+                        data.records.forEach(order => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                    <td>${order.order_id}</td>
+                    <td>${order.customer_id}</td>
+                    <td>${order.order_date}</td>
+                    <td>${order.total_amount}</td>
+                    <td>${order.status}</td>
+                    <td>${order.shipping_address}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="editOrder(${order.order_id})">Sửa</button>
+                        <button class="btn btn-danger" onclick="deleteOrder(${order.order_id})">Xóa</button>
+                    </td>
+                `;
+                            orderTable.appendChild(row);
+                        });
+                    } else {
+                        // Nếu không có đơn hàng nào
+                        orderTable.innerHTML = '<tr><td colspan="7">Không có đơn hàng nào.</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy đơn hàng:', error); // Xử lý lỗi
+                });
+        }
+
+        // Gọi hàm để lấy đơn hàng
+        fetchOrders();
+
+    // Gọi hàm để lấy danh sách đơn hàng khi trang được tải
+    window.onload = fetchOrders;
+
+    // Hàm sửa đơn hàng
+    function editOrder(orderId) {
+        // Logic để sửa đơn hàng
+        alert('Chức năng sửa đơn hàng chưa được triển khai.');
+    }
+
+    // Hàm xóa đơn hàng
+    function deleteOrder(orderId) {
+        // Logic để xóa đơn hàng
+        alert('Chức năng xóa đơn hàng chưa được triển khai.');
+    }
+        const token = localStorage.getItem('token');
+    if (token) {
+        const decoded = JSON.parse(atob(token.split('.')[1])); // Giải mã token
+        document.getElementById('userName').innerText = `Chào mừng: ${decoded.data.username}`; // Hiển thị email
+    }
+    </script>
+</body>
+
+</html>

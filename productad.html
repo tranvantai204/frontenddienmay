@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Sản Phẩm</title>
+    <link rel="stylesheet" href="stylee.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        /* CSS Styles */
+/* Global Styles */
+body {
+    font-family: 'Noto Sans', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #001f3f;
+    color: white;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    background-color: #4a3d93;
+}
+
+.sidebar li.active {
+    background-color: #4a3d93;
+}
+
+/* Content Area */
+.content {
+    margin-left: 270px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header h3 {
+    font-family: 'Roboto Mono', monospace;
+    color: #001f3f;
+    margin-bottom: 20px;
+}
+
+.button, .btn {
+    background-color: #4a3d93;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.button:hover, .btn:hover {
+    background-color: #03b300;
+}
+
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f4f4f4;
+}
+
+.search-bar input {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 80%;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    border-radius: 8px;
+}
+
+.modal-content {
+    padding: 20px;
+    background-color: #fefefe;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/* Modal Close Button */
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+}
+
+.close:hover {
+    color: black;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.pagination button:hover {
+    background-color: #45a049;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Image Hover */
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.05);
+}
+
+        
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>IPOS CALL CENTER</h2>
+        <ul>
+            <li>Dashboard</li>
+            <li class="active">Quản lý sản phẩm</li>
+            <li onclick="location.href='display.html'">Quản lý Tài Khoản</li>
+            <li onclick="location.href='bill.html'">Quản Lý Hóa Đơn</li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h3>Dashboard / Sản phẩm / Quản lý sản phẩm</h3>
+            <button onclick="location.href='add_product.html'" class="button">+ Thêm sản phẩm</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Hình ảnh thumbnail</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="productTable">
+                <!-- Dữ liệu sản phẩm sẽ được hiển thị ở đây -->
+            </tbody>
+        </table>
+        <div class="pagination" style="display: inline-block; position: absolute; left: 50%; bottom: 12px;">
+            <button id="prev-btn" disabled>Quay lại</button>
+            <button id="next-btn">Tiếp </button>
+        </div>
+    </div>
+        
+    </div>
+
+    <!-- Modal Xem Chi Tiết -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('detailModal')">&times;</span>
+            <h3>Thông Tin Chi Tiết Sản Phẩm</h3>
+            <p>Tên sản phẩm: <span id="detailProductName"></span></p>
+            <p>Mô tả: <span id="detailDescription"></span></p>
+            <p>Giá: <span id="detailPrice"></span></p>
+            <p>Số lượng: <span id="detailStock"></span></p>
+            <p>Danh mục: <span id="detailCategory"></span></p>
+            <p>Nhà cung cấp: <span id="detailSupplier"></span></p>
+            <h4>Hình ảnh chi tiết</h4>
+            <img id="detailImage1" class="detail-image" alt="Detail Image 1" style="display: none;">
+            <img id="detailImage2" class="detail-image" alt="Detail Image 2" style="display: none;">
+            <img id="detailImage3" class="detail-image" alt="Detail Image 3" style="display: none;">
+        </div>
+    </div>
+
+    <!-- Modal Sửa Sản Phẩm -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editModal')">&times;</span>
+            <h3>Sửa Sản Phẩm</h3>
+            <input type="hidden" id="editProductId">
+            <div class="form-group">
+                <label for="editProductName">Tên sản phẩm:</label>
+                <input type="text" id="editProductName">
+            </div>
+            <div class="form-group">
+                <label for="editDescription">Mô tả:</label>
+                <textarea id="editDescription"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="editPrice">Giá:</label>
+                <input type="number" id="editPrice">
+            </div>
+            <div class="form-group">
+                <label for="editStock">Số lượng:</label>
+                <input type="number" id="editStock">
+            </div>
+            <div class="form-group">
+                <label for="editCategory">Danh mục:</label>
+                <input type="text" id="editCategory">
+            </div>
+            <div class="form-group">
+                <label for="editSupplier">Nhà cung cấp:</label>
+                <select id="editSupplier">
+                    <!-- Danh sách nhà cung cấp sẽ được thêm vào đây -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="editImage">Hình ảnh:</label>
+                <input type="file" id="editImage" accept="image/*">
+            </div>
+            <button onclick="saveProductChanges()">Lưu Thay Đổi</button>
+        </div>
+    </div>
+    
+    <div id="product-list"></div>
+
+    <script src="productad.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <script>
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    </script>
+</body>
+</html> 

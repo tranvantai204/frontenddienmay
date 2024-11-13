@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <style>
+        body {
+    font-family: 'Noto Sans', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #001f3f;
+    color: white;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    background-color: #4a3d93;
+}
+
+.sidebar li.active {
+    background-color: #4a3d93;
+}
+
+/* Content Area */
+.content {
+    margin-left: 270px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header h3 {
+    font-family: 'Roboto Mono', monospace;
+    color: #001f3f;
+    margin-bottom: 20px;
+}
+
+.button, .btn {
+    background-color: #4a3d93;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.button:hover, .btn:hover {
+    background-color: #03b300;
+}
+
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f4f4f4;
+}
+
+.search-bar input {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 80%;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    border-radius: 8px;
+}
+
+.modal-content {
+    padding: 20px;
+    background-color: #fefefe;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/* Modal Close Button */
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+}
+
+.close:hover {
+    color: black;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.pagination button:hover {
+    background-color: #45a049;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Image Hover */
+img {
+    max-width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+img:hover {
+    transform: scale(1.05);
+}
+    </style>
+    <div class="sidebar">
+        <h2>IPOS CALL CENTER</h2>
+        <ul>
+            <li>Dashboard</li>
+            <li onclick="location.href='productad.html'">Quản Lý Sản Phẩm</li>
+            <li class="active">Danh sách tài khoản</li>
+            <li onclick="location.href='bill.html'">Quản Lý Hóa Đơn</li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h3>Dashboard / Tài khoản / Danh sách tài khoản</h3>
+            <div class="user-info">
+                <p id="userName"></p>
+                <button id="logoutButton" class="btn btn-danger">Đăng xuất</button>
+            </div>
+        </div>
+        
+
+        <div class="search-bar">
+            <input type="text" placeholder="Tìm kiếm tài khoản" id="searchInput" class="form-control">
+            <select onchange="changeRole(this.value)">
+                <option value="all">Tất cả</option>
+                <option value="admin">Admin</option>
+                <option value="user">Người dùng</option>
+            </select>
+            
+        </div>
+        
+
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tài khoản</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="accountTable"></tbody>
+        </table>
+        <nav aria-label="Page navigation">
+            <ul class="pagination" id="pagination">
+                <!-- Các nút phân trang sẽ được thêm vào đây -->
+            </ul>
+        </nav>
+
+        <!-- Nút thêm tài khoản -->
+        <button onclick="showAddAccountForm()" class="btn btn-primary mb-3">
+            <i class="fas fa-user-plus"></i> Thêm Tài Khoản Admin
+        </button>
+
+        <!-- Form thêm tài khoản -->
+        <div id="addAccountForm" class="container mt-4" style="display: none;">
+            <h3 class="text-primary"><i class="fas fa-user-shield"></i> Thêm Tài Khoản Admin Mới</h3>
+            <form id="adminAddForm">
+                <div class="form-group">
+                    <label for="newAccountUsername">Tên người dùng</label>
+                    <input type="text" class="form-control" id="newAccountUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="newAccountEmail">Email</label>
+                    <input type="email" class="form-control" id="newAccountEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="newAccountPassword">Mật khẩu</label>
+                    <input type="password" class="form-control" id="newAccountPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newAccountPhoneNumber">Số điện thoại</label>
+                    <input type="text" class="form-control" id="newAccountPhoneNumber" required>
+                </div>
+                <button type="button" id="submitNewAccount" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Tạo Admin Mới
+                </button>
+                <button type="button" onclick="hideAddAccountForm()" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Hủy
+                </button>
+            </form>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+    
+        // Đăng xuất
+        document.getElementById('logoutButton').addEventListener('click', function() {
+    window.location.href = 'login.html';
+});
+
+// Hàm fetch API để lấy danh sách tài khoản từ database
+let currentPage = 1; // Biến để theo dõi trang hiện tại
+const limit = 5;
+let currentRole = 'all'; // Biến để theo dõi vai trò hiện tại
+
+function fetchAccounts(page = 1, role = 'all') {
+    // Kiểm tra token admin
+    const token = localStorage.getItem('token'); // Giả sử bạn lưu token trong localStorage
+    console.log('Current Token:', token); // Debug token
+
+    if (!token) {
+        alert('Bạn chưa đăng nhập!');
+        return;
+    }
+
+    fetch(`http://localhost/CuaHangDT/api/nguoiDung/getAccount.php?page=${page}&role=${role}&limit=${limit}`, {
+        headers: {
+            'Authorization': `Bearer ${token}` // Thêm token vào header nếu cần
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+    console.log(data.accounts); // Kiểm tra dữ liệu trả về từ API
+    const accountTable = document.getElementById('accountTable');
+    accountTable.innerHTML = ''; // Xóa dữ liệu cũ
+
+    // Duyệt qua mỗi tài khoản và thêm vào bảng
+    data.accounts.forEach(account => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${account.id}</td>
+            <td>${account.username}</td>
+            <td>${account.email}</td>
+            <td>${account.phone_number}</td>
+            <td>${account.address} - ${account.city}</td>
+            <td>
+                <button class="btn btn-info" onclick="viewAccount(${account.id})">Xem chi tiết</button>
+                <button class="btn btn-warning" onclick="editAccount(${account.id})">Sửa</button>
+            </td>
+        `;
+        accountTable.appendChild(row);
+    });
+
+    // Cập nhật phân trang
+    updatePagination(data.totalPages);
+})
+        .catch(error => {
+            console.error('Error fetching accounts:', error);
+            alert('Có lỗi xảy ra: ' + error.message); // Hiển thị thông báo lỗi cho người dùng
+        });
+}
+
+// Gọi hàm fetchAccounts ban đầu với vai trò mặc định
+fetchAccounts(currentPage, currentRole);
+
+// Hàm để thay đổi vai trò và tải lại tài khoản
+function changeRole(role) {
+    currentRole = role;
+    fetchAccounts(currentPage, currentRole);
+}
+
+// Gọi hàm fetchAccounts ban đầu với vai trò mặc định
+fetchAccounts(currentPage, currentRole);
+
+
+
+// Cập nhật phân trang
+function updatePagination(totalPages) {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = ''; // Xóa dữ liệu cũ
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageItem = document.createElement('li');
+        pageItem.className = 'page-item' + (i === currentPage ? ' active' : '');
+        pageItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(${i})">${i}</a>`;
+        pagination.appendChild(pageItem);
+    }
+}
+
+// Hàm thay đổi trang
+function changePage(page) {
+    currentPage = page; // Cập nhật trang hiện tại
+    fetchAccounts(currentPage); // Gọi lại hàm để lấy danh sách tài khoản
+}
+
+// Gọi hàm để lấy danh sách tài khoản khi trang được tải
+fetchAccounts();
+
+        // Hiển thị form thêm tài khoản
+        function showAddAccountForm() {
+            document.getElementById('addAccountForm').style.display = 'block';
+            document.getElementById('editAccountForm').style.display = 'none';
+        }
+
+        // Ẩn form thêm tài khoản
+        function hideAddAccountForm() {
+            document.getElementById('addAccountForm').style.display = 'none';
+        }
+
+        // Hiển thị form sửa tài khoản
+        function showEditAccountForm() {
+            document.getElementById('editAccountForm').style.display = 'block';
+            document.getElementById('addAccountForm').style.display = 'none';
+        }
+
+        // Ẩn form sửa tài khoản
+        function hideEditAccountForm() {
+            document.getElementById('editAccountForm').style.display = 'none';
+        }
+
+        // Xử lý khi nhấn nút thêm tài khoản mới
+        document.getElementById('submitNewAccount').addEventListener('click', function() {
+            console.log('Button clicked'); // Thêm log để debug
+            
+            // Lấy giá trị từ form
+            const username = document.getElementById('newAccountUsername').value.trim();
+            const email = document.getElementById('newAccountEmail').value.trim();
+            const password = document.getElementById('newAccountPassword').value.trim();
+            const phone_number = document.getElementById('newAccountPhoneNumber').value.trim();
+
+            console.log('Form values:', { username, email, password, phone_number }); // Thêm log để debug
+
+            // Kiểm tra các trường bắt buộc
+            if (!username || !email || !password || !phone_number) {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Vui lòng điền đầy đủ thông tin!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return;
+            }
+
+            // Gửi request đến API
+            fetch('http://localhost/CuaHangDT/api/nguoiDung/registerAdmin.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                },
+                body: JSON.stringify({
+                    username: username,
+                    email: email,
+                    password: password,
+                    phone_number: phone_number
+                })
+            })
+            .then(response => {
+                console.log('Response:', response); // Thêm log để debug
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data:', data); // Thêm log để debug
+                if (data.message === "User was created.") {
+                    Swal.fire({
+                        position: "top",
+                        icon: "success",
+                        title: "Thêm tài khoản admin thành công!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Reset form và ẩn nó
+                        document.getElementById('adminAddForm').reset();
+                        document.getElementById('addAccountForm').style.display = 'none';
+                        // Tải lại danh sách tài khoản
+                        loadAccounts();
+                    });
+                } else {
+                    Swal.fire({
+                        position: "top",
+                        icon: "error",
+                        title: "Thêm tài khoản thất bại",
+                        text: data.message,
+                        showConfirmButton: true
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Đã xảy ra lỗi khi thêm tài khoản",
+                    showConfirmButton: true
+                });
+            });
+        });
+
+        // Tự động tải danh sách tài khoản khi trang được t��i
+        window.onload = fetchAccounts;
+        window.onload = function() {
+    fetchAccounts(); // Tải danh sách tài khoản
+
+    // Kiểm tra xem có token không
+    const token = localStorage.getItem('token');
+    if (token) {
+        const decoded = JSON.parse(atob(token.split('.')[1])); // Giải mã token
+        document.getElementById('userName').innerText = `Chào mừng: ${decoded.data.username}`; // Hiển thị username
+    }
+};
+
+    </script>
+</body>
+
+</html>
