@@ -203,6 +203,76 @@ img:hover {
     transform: scale(1.05);
 }
 
+.product-images {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.main-image {
+    margin: 20px 0;
+}
+
+.main-image img {
+    transition: transform 0.3s ease;
+}
+
+.main-image img:hover {
+    transform: scale(1.02);
+}
+
+.product-info {
+    margin-bottom: 20px;
+}
+
+.product-info p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.product-info span {
+    color: #4a4a4a;
+    font-weight: 500;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.detail-image {
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.thumbnail-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.thumbnail:hover {
+    border-color: #4a3d93;
+}
+
+.thumbnail.active {
+    border-color: #4a3d93;
+}
+
         
     </style>
 </head>
@@ -251,16 +321,22 @@ img:hover {
         <div class="modal-content">
             <span class="close" onclick="closeModal('detailModal')">&times;</span>
             <h3>Thông Tin Chi Tiết Sản Phẩm</h3>
-            <p>Tên sản phẩm: <span id="detailProductName"></span></p>
-            <p>Mô tả: <span id="detailDescription"></span></p>
-            <p>Giá: <span id="detailPrice"></span></p>
-            <p>Số lượng: <span id="detailStock"></span></p>
-            <p>Danh mục: <span id="detailCategory"></span></p>
-            <p>Nhà cung cấp: <span id="detailSupplier"></span></p>
-            <h4>Hình ảnh chi tiết</h4>
-            <img id="detailImage1" class="detail-image" alt="Detail Image 1" style="display: none;">
-            <img id="detailImage2" class="detail-image" alt="Detail Image 2" style="display: none;">
-            <img id="detailImage3" class="detail-image" alt="Detail Image 3" style="display: none;">
+            <div class="product-info">
+                <p>Tên sản phẩm: <span id="detailProductName"></span></p>
+                <p>Mô tả: <span id="detailDescription"></span></p>
+                <p>Giá: <span id="detailPrice"></span></p>
+                <p>Số lượng: <span id="detailStock"></span></p>
+                <p>Danh mục: <span id="detailCategory"></span></p>
+                <p>Nhà cung cấp: <span id="detailSupplier"></span></p>
+            </div>
+            
+            <div class="product-images">
+                <h4>Hình ảnh sản phẩm</h4>
+                <div class="main-image">
+                    <img id="mainImage" alt="Hình ảnh sản phẩm" 
+                         style="max-width: 400px; height: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                </div>
+            </div>
         </div>
     </div>
 

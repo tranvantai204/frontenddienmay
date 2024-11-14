@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh Sách Đơn Hàng</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -86,6 +88,30 @@
         .table th {
             background-color: #f4f4f4;
         }
+
+        .custom-swal-container {
+            z-index: 9999;
+        }
+        
+        .custom-swal-popup {
+            font-size: 0.9rem;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table th, .table td {
+            padding: 0.5rem;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
     </style>
 
 <div class="sidebar">
@@ -123,6 +149,9 @@
         </table>
     </div>
 
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <script>
         // Đăng xuất
         document.getElementById('logoutButton').addEventListener('click', function() {
@@ -131,60 +160,56 @@
 
     // Hàm fetch API để lấy danh sách đơn hàng từ database
     function fetchOrders() {
-            // Lấy token từ localStorage
             const token = localStorage.getItem('token');
-
-            // Kiểm tra xem token có tồn tại không
             if (!token) {
                 console.error('Token không tồn tại. Vui lòng đăng nhập.');
                 return;
             }
 
-            // Gửi yêu cầu đến API
             fetch('http://localhost/CuaHangDT/api/donHang/get_allAd.php', {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`, // Gửi token trong header
-                        'Content-Type': 'application/json' // Định dạng dữ liệu là JSON
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
                 })
                 .then(response => {
-                    // Kiểm tra mã trạng thái của phản hồi
                     if (!response.ok) {
                         throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
                     }
-                    return response.json(); // Chuyển đổi phản hồi sang JSON
+                    return response.json();
                 })
                 .then(data => {
                     const orderTable = document.getElementById('orderTable');
-                    orderTable.innerHTML = ''; // Xóa dữ liệu cũ
+                    orderTable.innerHTML = '';
 
-                    // Kiểm tra xem có dữ liệu đơn hàng không
                     if (data.records && data.records.length > 0) {
-                        // Duyệt qua mỗi đơn hàng và thêm vào bảng
                         data.records.forEach(order => {
                             const row = document.createElement('tr');
                             row.innerHTML = `
                     <td>${order.order_id}</td>
                     <td>${order.customer_id}</td>
                     <td>${order.order_date}</td>
-                    <td>${order.total_amount}</td>
+                    <td>${formatCurrency(order.total_amount)}</td>
                     <td>${order.status}</td>
                     <td>${order.shipping_address}</td>
                     <td>
-                        <button class="btn btn-warning" onclick="editOrder(${order.order_id})">Sửa</button>
-                        <button class="btn btn-danger" onclick="deleteOrder(${order.order_id})">Xóa</button>
+                        <button class="btn btn-warning btn-sm" onclick="confirmOrder(${order.order_id})">
+                            <i class="fas fa-check"></i> Xác nhận
+                        </button>
+                        <button class="btn btn-info btn-sm" onclick="viewBillDetail(${order.order_id})">
+                            <i class="fas fa-eye"></i> Chi tiết
+                        </button>
                     </td>
                 `;
                             orderTable.appendChild(row);
                         });
                     } else {
-                        // Nếu không có đơn hàng nào
                         orderTable.innerHTML = '<tr><td colspan="7">Không có đơn hàng nào.</td></tr>';
                     }
                 })
                 .catch(error => {
-                    console.error('Lỗi khi lấy đơn hàng:', error); // Xử lý lỗi
+                    console.error('Lỗi khi lấy đơn hàng:', error);
                 });
         }
 
@@ -194,21 +219,151 @@
     // Gọi hàm để lấy danh sách đơn hàng khi trang được tải
     window.onload = fetchOrders;
 
-    // Hàm sửa đơn hàng
-    function editOrder(orderId) {
-        // Logic để sửa đơn hàng
-        alert('Chức năng sửa đơn hàng chưa được triển khai.');
+    // Hàm xác nhận đơn hàng
+    function confirmOrder(orderId) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('Token không tồn tại. Vui lòng đăng nhập.');
+            return;
+        }
+
+        console.log(`Confirming order with ID: ${orderId}`);
+
+        fetch(`http://localhost/CuaHangDT/api/donHang/edit_invoice.php?order_id=${orderId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                status: 'confirmed'
+            })
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
+            if (data.success || data.message === 'DonHang Updated') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: 'Đơn hàng đã được xác nhận.'
+                });
+                fetchOrders(); // Refresh the order list
+            } else {
+                throw new Error(data.message || 'Unknown error');
+            }
+        })
+        .catch(error => {
+            console.error('Lỗi khi xác nhận đơn hàng:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: `Không thể xác nhận đơn hàng. Vui lòng thử lại sau. Chi tiết lỗi: ${error.message}`
+            });
+        });
     }
 
-    // Hàm xóa đơn hàng
-    function deleteOrder(orderId) {
-        // Logic để xóa đơn hàng
-        alert('Chức năng xóa đơn hàng chưa được triển khai.');
-    }
         const token = localStorage.getItem('token');
     if (token) {
         const decoded = JSON.parse(atob(token.split('.')[1])); // Giải mã token
         document.getElementById('userName').innerText = `Chào mừng: ${decoded.data.username}`; // Hiển thị email
+    }
+
+    function viewBillDetail(orderId) {
+        console.log('OrderID:', orderId);
+
+        const token = localStorage.getItem('token');
+        
+        fetch(`http://localhost/CuaHangDT/api/chiTietDonHang/get_detail.php?order_id=${orderId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data received:', data);
+
+            if (data.order_details && data.order_details.length > 0) {
+                let detailHtml = `
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                data.order_details.forEach(detail => {
+                    detailHtml += `
+                        <tr>
+                            <td>${detail.product_name}</td>
+                            <td class="text-center">${detail.quantity}</td>
+                            <td class="text-right">${formatCurrency(detail.unit_price)}</td>
+                            <td class="text-right">${formatCurrency(detail.total_price)}</td>
+                        </tr>
+                    `;
+                });
+
+                detailHtml += `
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-right"><strong>Tổng tiền:</strong></td>
+                                    <td class="text-right"><strong>${formatCurrency(data.total_amount)}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                `;
+
+                Swal.fire({
+                    title: `Chi tiết đơn hàng #${orderId}`,
+                    html: detailHtml,
+                    width: '800px',
+                    showCloseButton: true,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Thông báo',
+                    text: 'Không có chi tiết đơn hàng'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error details:', error);
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Không thể tải chi tiết đơn hàng. Vui lòng thử lại sau.'
+            });
+        });
+    }
+
+    // Hàm format tiền tệ
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('vi-VN', { 
+            style: 'currency', 
+            currency: 'VND' 
+        }).format(amount);
     }
     </script>
 </body>

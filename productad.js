@@ -95,35 +95,65 @@ function fetchSuppliers() {
 // Hàm hiển thị chi tiết sản phẩm
 function showProductDetails(product) {
     const detailModal = document.getElementById('detailModal');
-    detailModal.style.display = 'block'; // Hiển thị modal
+    detailModal.style.display = 'block';
 
-    document.getElementById('detailProductName').textContent = product.product_name;
-    document.getElementById('detailDescription').textContent = product.description;
-    document.getElementById('detailPrice').textContent = product.price + ' VND';
-    document.getElementById('detailStock').textContent = product.stock;
-    document.getElementById('detailCategory').textContent = product.category_id;
-
-    fetch(`http://localhost/CuaHangDT/api/nhaCungCap/show.php?id=${product.supplier_id}`)
+    fetch(`http://localhost/CuaHangDT/api/sanPham/show.php?id=${product.product_id}`)
         .then(response => response.json())
         .then(data => {
-            if (data.supplier_id) {
-                document.getElementById('detailSupplier').textContent = data.supplier_name;
-            } else {
-                document.getElementById('detailSupplier').textContent = 'N/A';
-            }
-        })
-        .catch(error => console.error('Error fetching supplier details:', error));
+            console.log('Product data:', data);
 
-    const detailImages = [product.detail_image1, product.detail_image2, product.detail_image3];
-    detailImages.forEach((imgUrl, index) => {
-        const imgElement = document.getElementById(`detailImage${index + 1}`);
-        if (imgUrl && imgUrl !== 'NULL' && imgUrl.trim() !== '') {
-            imgElement.src = imgUrl;
-            imgElement.style.display = 'block';
-        } else {
-            imgElement.style.display = 'none';
-        }
-    });
+            // Hiển thị thông tin cơ bản
+            document.getElementById('detailProductName').textContent = data.product_name;
+            document.getElementById('detailDescription').textContent = data.description;
+            document.getElementById('detailPrice').textContent = data.price + ' VND';
+            document.getElementById('detailStock').textContent = data.stock;
+            document.getElementById('detailCategory').textContent = data.category_id;
+
+            // Xử lý hiển thị hình ảnh thumbnail
+            const mainImage = document.getElementById('mainImage');
+            if (data.thumbnail_image && data.thumbnail_image.includes('cloudinary.com')) {
+                console.log('Loading image:', data.thumbnail_image);
+                mainImage.src = data.thumbnail_image;
+                mainImage.style.display = 'block';
+
+                mainImage.onload = function() {
+                    console.log('Image loaded successfully');
+                };
+
+                mainImage.onerror = function() {
+                    console.error('Failed to load image:', this.src);
+                    this.style.display = 'none';
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Không thể tải hình ảnh'
+                    });
+                };
+            } else {
+                console.log('No valid image URL found');
+                mainImage.style.display = 'none';
+            }
+
+            // Fetch thông tin nhà cung cấp
+            fetch(`http://localhost/CuaHangDT/api/nhaCungCap/show.php?id=${data.supplier_id}`)
+                .then(response => response.json())
+                .then(supplierData => {
+                    document.getElementById('detailSupplier').textContent = 
+                        supplierData.supplier_id ? supplierData.supplier_name : 'N/A';
+                })
+                .catch(error => {
+                    console.error('Error fetching supplier:', error);
+                    document.getElementById('detailSupplier').textContent = 'N/A';
+                });
+        })
+        .catch(error => {
+            console.error('Error fetching product details:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Không thể tải thông tin sản phẩm'
+            });
+        });
 }
 function editProduct(product) {
     // Mở modal hoặc dẫn tới trang sửa sản phẩm
