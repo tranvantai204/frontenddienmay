@@ -1,145 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smartphone</title>
-    <link rel="stylesheet" href="StylesA.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="Smartphone.css">
+    <script src="common.js" defer></script>
+    <script src="Smartphone.js"></script>
     <style>
-        .product {
-            display: inline-block;
-            width: 200px;
-            margin: 10px;
-            border: 1px solid #ccc;
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .cart-animation {
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+        button {
+            position: relative;
             padding: 10px;
+            background: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        
-        .hidden {
-            display: none;
-        }
+        button:hover {
+            background-color: #ff4500; 
+        }                   
     </style>
 </head>
-
-<body>
-    <!-- HEADER -->
+<body data-category="Smartphone">
     <header>
         <div id="top-header">
-            <ul>
-                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
-                <li><a href="#">Email: email@email.com</a></li>
-                <li><a href="#">Địa chỉ</a></li>
-            </ul>
-            <ul>
-                <li><a href="infomationuser.html">Tài khoản của tôi</a></li>
-                <li><a href="login.html">Đăng xuất</a></li>
-            </ul>
+            <ul><li><a href="infomationuser.html">Tài khoản của tôi</a></li></ul>
         </div>
-
         <div id="header">
-            <div class="logo">
-                <a href="#"><img src="img/logo.png" alt="Logo"></a>
-            </div>
+            <div class="logo"><a href=""><img src="img/logo.png" alt="Logo"></a></div>
             <div class="search-bar">
                 <form onsubmit="return false;">
                     <input type="text" id="search-input" placeholder="Tìm kiếm..." oninput="searchProducts()">
                     <button type="submit">Tìm kiếm</button>
                 </form>
-            </div>
-            <div class="cart">
-                <a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng (<span id="cart-count">0</span>)</a>
-            </div>
+            </div><div class="cart"><a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng (<span id="cart-count">0</span>)</a></div>
         </div>
     </header>
-
-    <!-- NAVIGATION -->
+    <!-- <div id="header-placeholder"></div> -->
     <nav>
         <ul>
             <li><a href="home.html">Trang chủ</a></li>
-            <li><a href="voucher.html">Khuyến mãi</a></li>
+            <!-- <li><a href="voucher.html">Khuyến mãi</a></li> -->
             <li><a href="Laptop.html">Laptop</a></li>
             <li><a href="Smartphone.html">Smartphone</a></li>
             <li><a href="photograph.html">Máy ảnh</a></li>
             <li><a href="spareparts.html">Phụ kiện</a></li>
         </ul>
     </nav>
-
-    <!-- SECTION: SẢN PHẨM SMARTPHONE -->
     <section>
-        <h3>Sản phẩm Smartphone</h3>
-
-        <!-- FILTERS -->
+        <h3>Smartphone</h3><br>
         <div class="filters">
-            <h4>Bộ lọc</h4>
             <form id="filter-form">
                 <label for="price">Giá:</label>
                 <select id="price" name="price">
                     <option value="all">Tất cả</option>
-                    <option value="0-300">Dưới $300</option>
-                    <option value="300-600">$300 - $600</option>
-                    <option value="600-900">$600 - $900</option>
-                    <option value="900+">Trên $900</option>
+                    <option value="0-10000000">Dưới 10 triệu</option>
+                    <option value="10000000-20000000">Từ 10 - 20 triệu</option>
+                    <option value="20000000-30000000">Từ 20 - 30 triệu</option>
+                    <option value="30000000-40000000">Từ 30 - 40 triệu</option>
+                    <option value="40000000-50000000">Từ 40 - 50 triệu</option>
                 </select>
                 <br>
-                <label for="brand">Hãng:</label>
-                <select id="brand" name="brand">
-                    <option value="all">Tất cả</option>
-                    <option value="apple">Apple</option>
-                    <option value="samsung">Samsung</option>
-                    <option value="xiaomi">Xiaomi</option>
-                    <option value="oppo">Oppo</option>
-                </select>
             </form>
         </div>
+        <div class="products" id="product-list">
 
-        <!-- PRODUCTS -->
-        <div class="products">
-            <div class="product" data-price="799" data-brand="apple">
-                <img src="img/smartphone01.png" alt="Smartphone 1">
-                <h4><a href="#">iPhone 13</a></h4>
-                <p class="product-price">Giá: $799. 00 <del>$899.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product" data-price="999" data-brand="samsung">
-                <img src="img/smartphone02.png" alt="Smartphone 2">
-                <h4><a href="#">Samsung Galaxy S21</a></h4>
-                <p class="product-price">Giá: $999.00 <del>$1099.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product" data-price="749" data-brand="xiaomi">
-                <img src="img/smartphone03.png" alt="Smartphone 3">
-                <h4><a href="#">Xiaomi Mi 11</a></h4>
-                <p class="product-price">Giá: $749.00 <del>$799.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product" data-price="899" data-brand="oppo">
-                <img src="img/smartphone04.png" alt="Smartphone 4">
-                <h4><a href="#">Oppo Find X3</a></h4>
-                <p class="product-price">Giá: $899.00 <del>$999.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product" data-price="949" data-brand="samsung">
-                <img src="img/smartphone05.png" alt="Smartphone 5">
-                <h4><a href="#">Samsung Galaxy Note 20</a></h4>
-                <p class="product-price">Giá: $949.00 <del>$1099.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product" data-price="199" data-brand="xiaomi">
-                <img src="img/smartphone06.png" alt="Smartphone 6">
-                <h4><a href="#">Xiaomi Redmi Note 10</a></h4>
-                <p class="product-price">Giá: $199.00 <del>$249.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
         </div>
     </section>
-
-    <!-- FOOTER -->
     <footer>
+        <br>
+        <br/>
         <p>&copy; 2024 Trang Bán Hàng. </p>
     </footer>
-
-    <script>
+    <!-- <div id="footer-placeholder"></div> -->
+    <!-- <script>
         let cartCount = 0;
 
         function addToCart(event) {
@@ -236,7 +180,7 @@
                 }
             });
         }
-    </script>
+    </script> -->
 </body>
 
 </html>

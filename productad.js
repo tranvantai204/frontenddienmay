@@ -4,7 +4,7 @@ const token = localStorage.getItem('token');
 console.log('Token:', token); // Kiểm tra token
 
 function fetchProducts(page) {
-    fetch(`http://localhost/CuaHangDT/api/sanPham/read.php?page=${page}`)
+    fetch(`http://localhost/CuaHangDT/api/sanPham/read.php?page=${page}&limit=${limit}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -12,10 +12,9 @@ function fetchProducts(page) {
             return response.json();
         })
         .then(data => {
-            // Kiểm tra đúng cấu trúc dữ liệu
             if (data.data && data.paging) {
-                displayProducts(data.data); // Sử dụng data.data
-                updatePagination(data.paging.total_pages, page); // Sử dụng data.paging.total_pages
+                displayProducts(data.data);
+                updatePagination(data.paging.total_pages, page);
             } else {
                 console.error('No products found in response:', data);
             }
@@ -26,7 +25,11 @@ function fetchProducts(page) {
 function displayProducts(products) {
     const productTable = document.getElementById('productTable');
     productTable.innerHTML = ''; // Xóa danh sách sản phẩm hiện tại
-    products.forEach((product, index) => {
+    
+    // Giới hạn số sản phẩm hiển thị là 10
+    const productsToShow = products.slice(0, limit);
+    
+    productsToShow.forEach((product, index) => {
         const productRow = document.createElement('tr');
         productRow.innerHTML = `
             <td>${(currentPage - 1) * limit + index + 1}</td>
@@ -47,22 +50,30 @@ function displayProducts(products) {
 function updatePagination(totalPages, currentPage) {
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
-    prevBtn.disabled = currentPage === 1; // Vô hiệu hóa nút Previous nếu đang ở trang đầu
-    nextBtn.disabled = currentPage === totalPages; // Vô hiệu hóa nút Next nếu đang ở trang cuối
+    
+    // Lưu tổng số trang vào data attribute
+    nextBtn.dataset.totalPages = totalPages;
+    
+    // Cập nhật trạng thái nút
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
 }
 
 // Thêm sự kiện lắng nghe cho nút Previous
 document.getElementById('prev-btn').addEventListener('click', () => {
     if (currentPage > 1) {
-        currentPage--; // Giảm trang hiện tại
-        fetchProducts(currentPage); // Gọi lại sản phẩm cho trang mới
+        currentPage--;
+        fetchProducts(currentPage);
     }
 });
 
 // Thêm sự kiện lắng nghe cho nút Next
 document.getElementById('next-btn').addEventListener('click', () => {
-    currentPage++; // Tăng trang hiện tại
-    fetchProducts(currentPage); // Gọi lại sản phẩm cho trang mới
+    const totalPages = parseInt(document.getElementById('next-btn').dataset.totalPages);
+    if (currentPage < totalPages) {
+        currentPage++;
+        fetchProducts(currentPage);
+    }
 });
 
 // Tải sản phẩm khi trang được tải

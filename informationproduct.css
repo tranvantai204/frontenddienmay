@@ -1,0 +1,171 @@
+body,h1,h2,h3,h4,p,ul,li {
+    margin: 0;
+    /* padding: 0; */
+    list-style: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#top-header {
+    display: flex;
+    justify-content: right;
+    padding: 10px 20px;
+}
+
+#top-header ul {
+    display: flex;
+}
+#top-header li {
+    margin-right: 15px;
+}
+#top-header a, .cart a, .logo img{
+    color: #fff;
+    text-decoration: none;
+}
+
+.search-bar input[type="text"] {/*thanh tìm kiếm*/
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.search-bar button {
+    padding: 10px;
+    background: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button {
+    padding: 10px;
+    background: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+header {
+    background: #333;
+    color: #fff;
+    align-items: center;
+    
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+nav {
+    background: #444;
+}
+nav a,li{
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+section {
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    margin: 150px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+footer {
+    text-align: center;
+    background: #333;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    width: auto;
+    min-height: 100px;
+}
+
+/*định dạng slideshow*/
+.slideshow-container {
+    /* position: relative;  */
+    /* max-width: 100%; */
+    min-height: 250px;
+    overflow: hidden;
+
+}
+.mySlides{
+    display: none;
+    position: relative;
+    min-height: 200px;
+}
+.mySlides img{
+    border-radius: 10px;
+    border: 3px solid #cccccc;
+    padding: 5px;
+    max-height: 400px;
+    object-fit: contain;
+    width: auto;
+}
+/* #product-detail img{
+    margin: 0 auto;
+    display: block;
+    max-height: 300px;
+    max-width: 100%;
+} */
+
+/*định dạng nút next, prev*/
+.mySlides .next {
+    right: 5px; /* Đặt ở bên phải */
+
+}
+.mySlides .prev{
+    left: 5px;
+}
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Màu nền khi hover */
+}
+.mySlides .prev, 
+.mySlides .next {
+    position: absolute;
+    top: 20%; /* Đặt ở giữa chiều cao của slideshow */
+    width: auto;
+    cursor: pointer;
+    padding: 16px;
+    color: #cccccc;
+    font-weight: bold;
+    font-size: 25px;
+    border-radius: 0 3px 3px 0;
+    transition: 0.1s ease;
+    user-select: none;
+    background-color: #555;
+}
+/*
+/*định dạng thumbanil*/
+.thumbnail-grid{
+    text-align: center;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.thumbnail{
+    /* width: 60px; */
+    height: 100px;
+    /* object-fit: cover; */
+    cursor: pointer;
+    opacity: 0.6;
+    transition: none;
+}
+.thumbnail:hover, .active-thumbnail{
+    opacity: 1;
+    border: 1px solid #555;
+}
+
+
+

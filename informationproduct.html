@@ -1,31 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin sản phẩm</title>
-    <link rel="stylesheet" href="StylesA.css">
+    <link rel="stylesheet" href="informationproduct.css">
+    <!-- <link href="informationproduct.css"> -->
+    <script src="informationproduct.js"></script>
+    <style>
+        /* .next {
+            right: 0; 
+        } */
+        /* .prev{
+            left: 0;
+        } */
+        button {
+            padding: 10px;
+            background: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff4500; 
+        }
+    </style>
 </head>
-
 <body>
-    <!-- HEADER -->
     <header>
         <div id="top-header">
-            <ul>
-                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
-                <li><a href="#">Email: email@email.com</a></li>
-                <li><a href="#">Địa chỉ</a></li>
-            </ul>
-            <ul>
-                <li><a href="infomationuser.html">Tài khoản của tôi</a></li>
-            </ul>
+                <!-- <a href="cart.html" class="cart-icon"><img src="cart-icon.png" alt="Giỏ hàng"></a> -->
+            <ul><li><a href="infomationuser.html">Tài khoản của tôi</a></li></ul>
         </div>
 
         <div id="header">
-            <div class="logo">
-                <a href="#"><img src="img/logo.png" alt="Logo"></a>
-            </div>
+            <div class="logo"><a href="#"><img src="img/logo.png" alt="Logo"></a></div>
             <div class="search-bar">
                 <form>
                     <input type="text" placeholder="Tìm kiếm...">
@@ -38,38 +48,29 @@
         </div>
     </header>
 
-    <!-- NAVIGATION -->
     <nav>
         <ul>
             <li><a href="home.html">Trang chủ</a></li>
-            <li><a href="voucher.html">Khuyến mãi</a></li>
+            <!-- <li><a href="voucher.html">Khuyến mãi</a></li> -->
             <li><a href="Laptop.html">Laptop</a></li>
             <li><a href="Smartphone.html">Smartphone</a></li>
             <li><a href="photograph.html">Máy ảnh</a></li>
             <li><a href="spareparts.html">Phụ kiện</a></li>
         </ul>
     </nav>
-
-    <!-- SECTION: THÔNG TIN SẢN PHẨM -->
     <section>
-        <h3>Thông Tin Sản Phẩm</h3>
-        <div class="product-detail">
-            <div class="product-image">
-                <img src="img/product01.png" alt="Tên sản phẩm 1">
-            </div>
-            <div class="product-info">
-                <h4>Tên sản phẩm 1</h4>
-                <p>Mô tả: Đây là mô tả chi tiết của sản phẩm 1. Nó bao gồm các tính năng nổi bật và thông tin cần thiết cho khách hàng.</p>
-                <p>Giá: <strong>$980.00</strong> <del>$990.00</del></p>
-                <button>Thêm vào giỏ hàng</button>
-            </div>
+        <h3>Thông Tin Sản Phẩm</h3><br>
+        <div id="product-detail" >
+            
         </div>
-    </section>
 
-    <!-- FOOTER -->
+    </section>
     <footer>
+        <br/>
+        <br/>
         <p>&copy; 2024 Trang Bán Hàng. </p>
     </footer>
+
 </body>
 
 </html>

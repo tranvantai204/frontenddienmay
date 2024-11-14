@@ -5,114 +5,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giỏ hàng</title>
-    <link rel="stylesheet" href="StylesA.css">
-</head>
+    <link rel="stylesheet" href="cart.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
 
-<body>
+    <script src="cart.js"></script>
+    
     <style>
-        /* Styles for the cart section */
-        
-        .cart-items {
-            display: flex;
-            flex-direction: column;
-            margin: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+            font-family: 'Noto Sans', sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
-        
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+
+        .cart-table thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+            font-weight: bold;
         }
-        
-        .cart-item:last-child {
-            border-bottom: none;
-            /* Remove border for the last item */
+
+        .cart-table th,
+        .cart-table td {
+            padding: 12px 15px;
         }
-        
-        .cart-item img {
-            width: 80px;
-            /* Set a fixed width for product images */
+
+        .cart-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .cart-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .cart-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+        .cart-table img {
+            width: 130px;
             height: auto;
-            /* Maintain aspect ratio */
+            border-radius: 5px;
         }
-        
-        .cart-item h4 {
-            margin: 0;
-            font-size: 16px;
+
+        .cart-table button {
+            padding: 5px 10px;
+            margin: 0 5px;
         }
-        
-        .cart-item p {
-            margin: 0;
-            color: #555;
-        }
-        
+
         .cart-summary {
-            margin: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f1f1f1;
+            margin-top: 20px;
+            font-size: 1.2em;
             text-align: right;
-            /* Align the total amount to the right */
         }
-        
-        .cart-summary h4 {
-            margin: 0;
-            font-size: 18px;
-        }
-        
+
         .cart-summary button {
-            padding: 10px 15px;
-            background-color: #28a745;
-            /* Green color */
+            padding: 10px 20px;
+            background-color: #009879;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
-        
+
         .cart-summary button:hover {
-            background-color: #218838;
-            /* Darker green on hover */
+            background-color: #007a63;
         }
+
+
     </style>
-    <!-- HEADER -->
+
+    
+</head>
+<body>
     <header>
         <div id="top-header">
-            <ul>
-                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
-                <li><a href="#">Email: email@email.com</a></li>
-                <li><a href="#">Địa chỉ</a></li>
-            </ul>
-            <ul>
-                <li><a href="informationuser.html">Tài khoản của tôi</a></li>
-            </ul>
+            <ul><li><a href="informationuser.html">Tài khoản của tôi</a></li></ul>
         </div>
 
         <div id="header">
-            <div class="logo">
-                <a href="#"><img src="img/logo.png" alt="Logo"></a>
-            </div>
+            <div class="logo"><a href="#"><img src="img/logo.png" alt="Logo"></a></div>
             <div class="search-bar">
                 <form>
                     <input type="text" placeholder="Tìm kiếm...">
                     <button type="submit">Tìm kiếm</button>
                 </form>
             </div>
-            <div class="cart">
-                <a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a>
-            </div>
+            <div class="cart"><a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></div>
         </div>
     </header>
-
-    <!-- NAVIGATION -->
     <nav>
         <ul>
             <li><a href="home.html">Trang chủ</a></li>
@@ -123,24 +107,135 @@
             <li><a href="spareparts.html">Phụ kiện</a></li>
         </ul>
     </nav>
-
-    <!-- SECTION: GIỎ HÀNG -->
     <section>
         <h3>Giỏ Hàng Của Bạn</h3>
-        <div class="cart-items" id="cartItems">
-            <!-- Các sản phẩm sẽ được thêm vào đây bằng JavaScript -->
-        </div>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Hình đại diện</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng giá</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="cartItems">
+                <!-- Các dòng sản phẩm sẽ được thêm động từ JavaScript -->
+            </tbody>
+        </table>
+        
 
         <div class="cart-summary" id="cartSummary">
             <h4>Tổng Giá Trị Đơn Hàng: <strong id="totalAmount">$0.00</strong></h4>
-            <a href="payment.html"><button>Tiến Hành Thanh Toán</button></a>
+            <button id="checkoutButton">Tiến Hành Thanh Toán</button>
         </div>
     </section>
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2024 Trang Bán Hàng. </p>
-    </footer>
-    <script src="cart.js"></script>
-</body>
+    <footer><br><p>&copy; 2024 Trang Bán Hàng. </p></footer>
 
+    <script>
+        async function checkUserInfo() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Bạn cần đăng nhập để tiếp tục!',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
+        try {
+            // Gọi API để lấy thông tin người dùng
+            const response = await fetch('http://localhost/CuaHangDT/api/nguoiDung/getinfo.php', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                // Kiểm tra thông tin người dùng
+                if (!data.address || !data.phone_number) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Thông tin chưa đầy đủ',
+                        text: 'Thông tin của bạn còn thiếu. Vui lòng cập nhật để tiếp tục.',
+                        timer: 5000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = 'infomationuser.html';
+                    });
+                } else {
+                    /// Gọi API thanh toán
+                    const fullAddress = `${data.address}, ${data.city}`
+                    await processPayment(fullAddress);
+                }
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không thể lấy thông tin người dùng.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Có lỗi xảy ra khi kết nối đến server.',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+
+    async function processPayment(shippingAddress) {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost/CuaHangDT/api/thanhToan/create.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    shipping_address: shippingAddress
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thanh toán thành công!',
+                    text: 'Mã đơn hàng của bạn là: ' + result.order_id
+                });
+            } else {
+                const errorData = await response.json();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Lỗi khi thanh toán: ' + errorData.message,
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Có lỗi xảy ra khi xử lý thanh toán.',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+
+
+    document.getElementById('checkoutButton').addEventListener('click', checkUserInfo);
+    </script>
+</body>
 </html>

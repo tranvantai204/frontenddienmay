@@ -6,17 +6,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin người dùng</title>
     <link rel="stylesheet" href="StylesA.css">
+    <style>
+        .account-info,
+        .update-info {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .account-info h4,
+        .update-info h4 {
+            margin-bottom: 20px;
+        }
+
+        .account-info p {
+            margin: 10px 0;
+        }
+
+        .update-info {
+            display: none; /* Ẩn form cập nhật thông tin */
+        }
+
+        .update-info label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .update-info input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .update-info button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-info button:hover {
+            background-color: #0056b3;
+        }
+
+        .alert {
+            display: none;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .update-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .update-button button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-button button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- HEADER -->
     <header>
         <div id="top-header">
-            <ul>
-                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
-                <li><a href="#">Email: email@email.com</a></li>
-                <li><a href="#">Địa chỉ</a></li>
-            </ul>
             <ul>
                 <li><a href="infomationuser.html">Tài khoản của tôi</a></li>
             </ul>
@@ -53,31 +134,37 @@
     <!-- SECTION: THÔNG TIN KHÁCH HÀNG -->
     <section>
         <h3>Thông tin tài khoản của tôi</h3>
-        <div class="account-info">
+        <div class="account-info" id="account-info">
             <h4>Thông tin cá nhân</h4>
-            <p><strong>Họ và tên:</strong> Nguyễn Văn A</p>
-            <p><strong>Email:</strong> email@email.com</p>
-            <p><strong>Số điện thoại:</strong> +84 xxx-xxx-xxx</p>
-            <p><strong>Địa chỉ:</strong> 123 Đường ABC, Thành phố XYZ</p>
+            <p><strong>Họ và tên:</strong> <span id="name">Đang tải...</span></p>
+            <p><strong>Email:</strong> <span id="email">Đang tải...</span></p>
+            <p><strong>Số điện thoại:</strong> <span id="phone">Đang tải...</span></p>
+            <p><strong>Địa chỉ:</strong> <span id="address">Đang tải...</span></p>
+        </div>
+
+        <div class="update-button">
+            <button onclick="showUpdateForm()">Cập nhật thông tin</button>
         </div>
 
         <div class="update-info">
             <h4>Cập nhật thông tin</h4>
-            <form>
-                <label for="name">Họ và tên:</label>
-                <input type="text" id="name" value="Nguyễn Văn A">
+            <form id="updateForm">
+                <label for="username_up">Họ và tên:</label>
+                <input type="text" id="username_up" required>
+    
+                <label for="phone_number_up">Số điện thoại:</label>
+                <input type="text" id="phone_number_up" required>
+    
+                <label for="address_up">Địa chỉ:</label>
+                <input type="text" id="address_up" required>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" value="email@email.com">
-
-                <label for="phone">Số điện thoại:</label>
-                <input type="text" id="phone" value="+84 xxx-xxx-xxx">
-
-                <label for="address">Địa chỉ:</label>
-                <input type="text" id="address" value="123 Đường ABC, Thành phố XYZ">
-
+                <label for="city_up">Tỉnh, Thành phố:</label>
+                <input type="text" id="city_up" required>
+    
                 <button type="submit">Cập nhật thông tin</button>
             </form>
+            <div class="alert success" id="successMessage">Cập nhật thông tin thành công!</div>
+            <div class="alert error" id="errorMessage">Có lỗi xảy ra, vui lòng thử lại.</div>
         </div>
     </section>
 
@@ -85,6 +172,106 @@
     <footer>
         <p>&copy; 2024 Trang Bán Hàng. </p>
     </footer>
+
+
+    <script>
+        let hide = true;
+        function showUpdateForm() {
+
+            if(hide) {
+                document.querySelector('.update-info').style.display = 'none';
+                hide = false;
+            }
+            else{
+                document.querySelector('.update-info').style.display = 'block';
+                hide = true;
+            }
+        }
+
+        async function fetchUserInfo() {
+        const token = localStorage.getItem('token'); // Lấy token từ localStorage
+        if (!token) {
+            console.error("Token không tồn tại.");
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost/CuaHangDT/api/nguoiDung/getinfo.php', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                // Cập nhật giao diện với thông tin người dùng
+                document.getElementById('name').innerText = data.username || "Không có thông tin";
+                document.getElementById('email').innerText = data.email || "Không có thông tin";
+                document.getElementById('phone').innerText = data.phone_number || "Không có thông tin";
+                document.getElementById('address').innerText = data.address 
+                    ? `${data.address}, ${data.city}` 
+                    : "Không có thông tin";
+            } else {
+                console.error("Không thể lấy thông tin người dùng:", response.statusText);
+                document.getElementById('account-info').innerText = "Không thể lấy thông tin người dùng.";
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+        }
+    }
+
+        // Gọi hàm để lấy thông tin người dùng khi tải trang
+        fetchUserInfo();
+
+        
+
+        document.getElementById('updateForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Bạn cần đăng nhập để thực hiện chức năng này.');
+                    return;
+                }
+
+                const username = document.getElementById('username_up').value;
+                const phone_number = document.getElementById('phone_number_up').value;
+                const address = document.getElementById('address_up').value;
+                const city = document.getElementById('city_up').value;
+
+                fetch('http://localhost/CuaHangDT/api/nguoiDung/update_user_info.php', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        phone_number: phone_number,
+                        address: address,
+                        city: city 
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "User info was updated.") {
+                        document.getElementById('successMessage').style.display = 'block';
+                        document.getElementById('errorMessage').style.display = 'none';
+                    } else {
+                        document.getElementById('successMessage').style.display = 'none';
+                        document.getElementById('errorMessage').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating user info:', error);
+                    document.getElementById('successMessage').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'block';
+                });
+            });
+
+    </script>
 </body>
 
 </html>

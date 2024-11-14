@@ -5,48 +5,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang chủ</title>
-    <link rel="stylesheet" href="StylesA.css">
-    <style>
-        /* Thêm một số kiểu CSS cho sản phẩm */
-        
+    <link rel="stylesheet" href="home.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <script src="home.js"></script>
+    <style>        
         .products {
+            position: relative;
+        }
+        
+        .products-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 40px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .products-wrapper {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
             gap: 20px;
+            transition: all 0.3s ease;
         }
         
         .product {
-            border: 1px solid #ccc;
-            padding: 10px;
+            flex: 0 0 calc((100% - 80px) / 5);
+            max-width: 220px;
+            min-width: 0;
             text-align: center;
-            width: 200px;
         }
         
-        .cart-animation {
-            transition: transform 0.5s ease;
-            z-index: 1000;
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            transition: background-color 0.3s ease;
         }
+        
+        .nav-button:not(.disabled):hover {
+            background-color: #f5f5f5;
+        }
+        
+        .nav-button.prev {
+            left: 6px;
+        }
+        
+        .nav-button.next {
+            right: 6px;
+        }
+        
+        .nav-button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
     </style>
 </head>
 
 <body>
-    <!-- HEADER -->
     <header>
         <div id="top-header">
             <ul>
-                <li><a href="#">Liên hệ: +84 xxx-xxx-xxx</a></li>
-                <li><a href="#">Email:@email.com</a></li>
-                <li><a href="#">Địa chỉ: ....</a></li>
-            </ul>
-            <ul>
-                <li><a href="infomationuser.html">Tài khoản của tôi</a></li>
-                <li><a href="login.html">Đăng xuất</a></li>
+                <li id="greeting" style="display: none;">Xin chào <a id="username">info</a></li>
+                <li id="login-link"><a href="login.html">Đăng nhập</a></li>
+                <li id="account-link" style="display: none;"><a href="infomationuser.html">Tài khoản của tôi</a></li>
+                <li id="logout-link" style="display: none;"><a href="login.html" onclick="logout()">Đăng xuất</a>
             </ul>
         </div>
-
         <div id="header">
             <div class="logo">
-                <a href="#"><img src="img/logo.png" alt="Logo"></a>
+                <a href="#"><img src="" alt="Logo"></a>
             </div>
             <div class="search-bar">
                 <form onsubmit="return false;">
@@ -59,142 +102,82 @@
             </div>
         </div>
     </header>
-
-    <!-- NAVIGATION -->
     <nav>
         <ul>
             <li><a href="home.html">Trang chủ</a></li>
-            <li><a href="voucher.html">Khuyến mãi</a></li>
+            <!-- <li><a href="voucher.html">Khuyến mãi</a></li> -->
             <li><a href="Laptop.html">Laptop</a></li>
             <li><a href="Smartphone.html">Smartphone</a></li>
             <li><a href="photograph.html">Máy ảnh</a></li>
             <li><a href="spareparts.html">Phụ kiện</a></li>
         </ul>
     </nav>
-
-    <!-- SECTION: SẢN PHẨM MỚI -->
     <section>
         <h3>Sản phẩm mới</h3>
-        <div class="products" id="product-list">
-            <div class="product">
-                <img src="img/product01.jpg" alt="Sản phẩm 1">
-                <h4><a href="#">Tên sản phẩm 1</a></h4>
-                <p class="product-price">Giá: $980.00 <del>$990.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
+        <div class="products-container">
+            <button class="nav-button prev">‹</button>
+            <div class="products" id="product-list">
+                <!-- <button class="add-to-cart-btn" onclick="addToCart(event)" >Thêm vào giỏ hàng</button> -->
             </div>
-            <div class="product">
-                <img src="img/product02.png" alt="Sản phẩm 2">
-                <h4><a href="#">Tên sản phẩm 2</a></h4>
-                <p class="product-price">Giá: $980.00 <del>$990.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product">
-                <img src="img/product03.png" alt="Sản phẩm 3">
-                <h4><a href="#">Tên sản phẩm 3</a></h4>
-                <p class="product-price">Giá: $980.00 <del>$990.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product">
-                <img src="img/product04.png" alt="Sản phẩm 4">
-                <h4><a href="#">Tên sản phẩm 4</a></h4>
-                <p class="product-price">Giá: $980.00 <del>$990.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <!-- Thêm nhiều sản phẩm khác tại đây -->
+            <button class="nav-button next">›</button>
+        </div>
+        <div id="history-container" 
+        style="display: none; position: absolute; background: #fff; border: 1px solid #ddd; border-radius: 5px; max-width: 300px; z-index: 1000;">
         </div>
     </section>
 
-    <!-- SECTION: SẢN PHẨM BÁN CHẠY -->
-    <section>
-        <h3>Sản phẩm bán chạy</h3>
-        <div class="products" id="product-list">
-            <div class="product">
-                <img src="img/product10.png" alt="Sản phẩm 10">
-                <h4><a href="#">Tên sản phẩm 10</a></h4>
-                <p class="product-price">Giá: $980.00 <del>$990.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product">
-                <img src="img/product11.png" alt="Sản phẩm 11">
-                <h4><a href="#">Tên sản phẩm 11</a></h4>
-                <p class="product-price">Giá: $980.00 <del>$990.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product">
-                <img src="img/product12.png" alt="Sản phẩm 12">
-                <h4><a href="#">Tên sản phẩm 12</a></h4>
-                <p class="product-price">Giá: $980.00 <del>$990.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <div class="product">
-                <img src="img/product13.png" alt="Sản phẩm 13">
-                <h4><a href="#">Tên sản phẩm 13</a></h4>
-                <p class="product-price">Giá: $980.00 <del>$990.00</del></p>
-                <button onclick="addToCart(event)">Thêm vào giỏ hàng</button>
-            </div>
-            <!-- Thêm nhiều sản phẩm khác tại đây -->
-        </div>
-    </section>
-
-    <!-- FOOTER -->
+    
     <footer>
+        <br>
+        <br/>
         <p>&copy; 2024 Trang Bán Hàng. </p>
     </footer>
 
     <script>
-        let cartCount = 0;
+        // Giả sử token của bạn được lưu trong localStorage với tên là 'jwtToken'
+        const token = localStorage.getItem('token');
 
-        function addToCart(event) {
-            event.preventDefault();
-            const productName = event.target.parentNode.querySelector("h4 a").innerText;
-            const productPrice = event.target.parentNode.querySelector(".product-price").innerText;
+        function getUsernameFromToken(token) {
+            if (!token){
+                return null;
+            } 
+            // Phân tách các phần của JWT (header, payload, signature)
+            const payloadBase64 = token.split('.')[1];
 
-            // Cập nhật số lượng giỏ hàng
-            cartCount++;
-            document.getElementById("cart-count").innerText = cartCount;
+            if (!payloadBase64) {
+                return null;
+            } 
 
-            // Thêm sản phẩm vào giỏ hàng trong LocalStorage
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.push({
-                name: productName,
-                price: productPrice
-            });
-            localStorage.setItem('cart', JSON.stringify(cart));
+            // Giải mã payload từ base64
+            const payload = JSON.parse(atob(payloadBase64));
 
-            // Thêm hiệu ứng đưa vào giỏ hàng
-            const cartIcon = document.querySelector(".cart i");
-            const productImg = event.target.parentNode.querySelector("img");
-            const cartAnimation = productImg.cloneNode(true);
-            cartAnimation.classList.add("cart-animation");
-            cartAnimation.style.position = "absolute";
-            cartAnimation.style.top = event.clientY + "px";
-            cartAnimation.style.left = event.clientX + "px";
-            document.body.appendChild(cartAnimation);
-
-            setTimeout(() => {
-                cartAnimation.style.transform = "translateX(" + (cartIcon.offsetLeft - event.clientX) + "px) translateY(" + (cartIcon.offsetTop - event.clientY) + "px)";
-            }, 0);
-
-            setTimeout(() => {
-                cartAnimation.remove();
-            }, 500);
+            // Lấy `username` từ payload
+            return payload.data?.username || null;
         }
 
-        function searchProducts() {
-            const searchInput = document.getElementById("search-input");
-            const products = document.querySelectorAll(".product");
-            const searchValue = searchInput.value.toLowerCase();
+        // Sử dụng hàm để lấy username
+        const username = getUsernameFromToken(token);
+        if (username) {
+            document.getElementById('username').innerText = username;
+            document.getElementById('greeting').style.display = 'inline';
+            document.getElementById('account-link').style.display = 'inline';
+            document.getElementById('login-link').style.display = 'none';
+            document.getElementById('logout-link').style.display = 'inline';
+        } else {
+            document.getElementById('greeting').style.display = 'none';
+            document.getElementById('account-link').style.display = 'none';
+            document.getElementById('login-link').style.display = 'inline';
+            document.getElementById('logout-link').style.display = 'none';
+        }
 
-            products.forEach((product) => {
-                const productName = product.querySelector("h4 a").innerText.toLowerCase();
-                if (productName.includes(searchValue)) {
-                    product.style.display = "block";
-                } else {
-                    product.style.display = "none";
-                }
-            });
+        function logout() {
+            // Xóa token khỏi localStorage
+            localStorage.removeItem('token');
+            // Chuyển hướng đến trang đăng nhập hoặc làm mới trang
+            window.location.href = 'login.html';
         }
     </script>
+
 </body>
 
 </html>
