@@ -71,7 +71,9 @@ function fetchProductDetails(productId) {
     fetch(`http://localhost/CuaHangDT/api/sanpham/show.php?id=${productId}`)
         .then(response => response.json())
         .then(product => {
-            console.log('Product data:', product); // Thêm log để kiểm tra dữ liệu
+            console.log('Product data:', product);
+            console.log('Description:', product.description);
+            
             const productDetail = document.getElementById('product-detail');
             productDetail.innerHTML = `
                 <div class="product-container">
@@ -105,6 +107,23 @@ function fetchProductDetails(productId) {
                         <div class="product-price">
                             <span class="current-price">${Number(product.price).toLocaleString()} VND</span>
                         </div>
+                        
+                        <div class="product-description">
+                            <h3>Mô tả sản phẩm</h3>
+                            <div class="description-content">
+                                ${product.mota || product.description || 'Chưa có mô tả cho sản phẩm này'}
+                            </div>
+                        </div>
+
+                        <div class="product-details">
+                            <h3>Chi tiết sản phẩm</h3>
+                            <ul>
+                                <li><strong>Danh mục:</strong> ${product.category_name || 'Đang cập nhật'}</li>
+                                <li><strong>Thương hiệu:</strong> ${product.brand || 'Đang cập nhật'}</li>
+                                <li><strong>Tình trạng:</strong> ${product.status || 'Còn hàng'}</li>
+                            </ul>
+                        </div>
+
                         <div class="product-actions">
                             <button class="buy-now-btn" onclick="buyNow(${product.product_id})">
                                 <i class="fas fa-bolt"></i> Mua ngay

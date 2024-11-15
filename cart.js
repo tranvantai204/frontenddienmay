@@ -5,13 +5,35 @@ document.addEventListener('DOMContentLoaded', function() {
     let cartItems = [];
     
     if (!token) {
-        alert('Token không tồn tại. Vui lòng đăng nhập.');
+        Swal.fire({
+            title: 'Chưa đăng nhập!',
+            text: 'Vui lòng đăng nhập để xem giỏ hàng',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đăng nhập ngay',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'login.html';
+            }
+        });
         return;
     }
     
     loadCart();
     
     function loadCart() {
+        // Hiển thị loading
+        Swal.fire({
+            title: 'Đang tải...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         fetch('http://localhost/CuaHangDT/api/gioHang/get_cart.php', {
             method: 'GET',
             headers: {
@@ -21,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
+            Swal.close(); // Đóng loading
             const cartList = document.getElementById('cartItems');
             cartList.innerHTML = '';
             cartItems = data.records || [];
@@ -59,8 +82,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            console.error('Error fetching cart items:', error);
-            alert('Có lỗi xảy ra khi tải giỏ hàng');
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Không thể tải giỏ hàng',
+                confirmButtonColor: '#d33'
+            });
         });
     }
 
@@ -73,19 +101,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentQuantity = parseInt(currentQuantityElement.textContent);
                 
                 if (currentQuantity > 1) {
-                    // Chuẩn bị dữ liệu cho API
-                    const updatedItems = cartItems.map(item => ({
-                        product_id: item.product_id.toString(),
-                        quantity: item.product_id.toString() === productId ? 
-                            (currentQuantity - 1).toString() : 
-                            item.quantity.toString()
-                    }));
-
-                    updateCartQuantities(updatedItems);
+                    updateCartQuantities([{
+                        product_id: productId,
+                        quantity: (currentQuantity - 1).toString()
+                    }]);
                 } else if (currentQuantity === 1) {
-                    if (confirm('Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-                        removeItem(productId);
-                    }
+                    Swal.fire({
+                        title: 'Xác nhận xóa?',
+                        text: 'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Có, xóa nó!',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            removeItem(productId);
+                        }
+                    });
                 }
             });
         });
@@ -97,15 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentQuantityElement = this.parentElement.querySelector('.quantity-value');
                 const currentQuantity = parseInt(currentQuantityElement.textContent);
                 
-                // Chuẩn bị dữ liệu cho API
-                const updatedItems = cartItems.map(item => ({
-                    product_id: item.product_id.toString(),
-                    quantity: item.product_id.toString() === productId ? 
-                        (currentQuantity + 1).toString() : 
-                        item.quantity.toString()
-                }));
-
-                updateCartQuantities(updatedItems);
+                updateCartQuantities([{
+                    product_id: productId,
+                    quantity: (currentQuantity + 1).toString()
+                }]);
             });
         });
 
@@ -113,12 +142,33 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const productId = this.dataset.productId;
-                removeItem(productId);
+                Swal.fire({
+                    title: 'Xác nhận xóa?',
+                    text: 'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Có, xóa nó!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        removeItem(productId);
+                    }
+                });
             });
         });
     }
 
     function updateCartQuantities(items) {
+        Swal.fire({
+            title: 'Đang cập nhật...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         fetch('http://localhost/CuaHangDT/api/gioHang/update_quantities.php', {
             method: 'PUT',
             headers: {
@@ -130,49 +180,84 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.message === "Cart quantity was updated.") {
-                loadCart(); // Reload cart after successful update
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Đã cập nhật số lượng',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true
+                });
+                loadCart();
             } else {
-                alert('Cập nhật số lượng sản phẩm không thành công.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không thể cập nhật số lượng',
+                    confirmButtonColor: '#d33'
+                });
             }
         })
         .catch(error => {
-            console.error('Error updating cart items:', error);
-            alert('Có lỗi xảy ra khi cập nhật giỏ hàng');
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Có lỗi xảy ra khi cập nhật giỏ hàng',
+                confirmButtonColor: '#d33'
+            });
         });
     }
 
-    function removeItem(productId) { 
-        const token = localStorage.getItem('token'); 
-        if (!token) { 
-            alert('Token không tồn tại. Vui lòng đăng nhập.'); 
-            return; 
-        } 
-        fetch('http://localhost/CuaHangDT/api/gioHang/remove_from_cart.php', { 
-            method: 'DELETE', 
-            headers: { 
-                'Content-Type': 'application/json', 
-                'Authorization': `Bearer ${token}` 
-            }, 
-            body: JSON.stringify({ 
-                product_id: productId 
-            }) }) 
-            .then(response => response.json()) 
-            .then(data => { 
-                if (data.message === "Product was removed from cart.") { 
-                    loadCart(); 
-                    // Gọi hàm loadCart để tải lại giỏ hàng 
-                } 
-                else { 
-                    alert('Xóa sản phẩm không thành công.'); 
-                } 
-            }) 
-            .catch(error => { 
-                console.error('Error removing cart item:', error); 
-                alert('Có lỗi xảy ra khi xóa sản phẩm'); 
+    function removeItem(productId) {
+        Swal.fire({
+            title: 'Đang xóa...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
             }
-        );
-    }
+        });
 
-    
+        fetch('http://localhost/CuaHangDT/api/gioHang/remove_from_cart.php', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                product_id: productId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "Product was removed from cart.") {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Đã xóa sản phẩm',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true
+                });
+                loadCart();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi!',
+                    text: 'Không thể xóa sản phẩm',
+                    confirmButtonColor: '#d33'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Có lỗi xảy ra khi xóa sản phẩm',
+                confirmButtonColor: '#d33'
+            });
+        });
+    }
 });
 
