@@ -32,90 +32,226 @@ function plusSlides(n) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    setupAuth();
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
+    
+    if (productId) {
+        fetchProductDetails(productId);
+    }
+});
 
+function setupAuth() {
+    const token = localStorage.getItem('token');
+    const username = getUsernameFromToken(token);
+    
+    if (username) {
+        document.getElementById('username').innerText = username;
+        document.getElementById('greeting').style.display = 'inline';
+        document.getElementById('account-link').style.display = 'inline';
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'inline';
+    } else {
+        document.getElementById('greeting').style.display = 'none';
+        document.getElementById('account-link').style.display = 'none';
+        document.getElementById('login-link').style.display = 'inline';
+        document.getElementById('logout-link').style.display = 'none';
+    }
+}
+
+function getUsernameFromToken(token) {
+    if (!token) return null;
+    const payloadBase64 = token.split('.')[1];
+    if (!payloadBase64) return null;
+    const payload = JSON.parse(atob(payloadBase64));
+    return payload.data?.username || null;
+}
+
+function fetchProductDetails(productId) {
     fetch(`http://localhost/CuaHangDT/api/sanpham/show.php?id=${productId}`)
         .then(response => response.json())
-        .then(data => {
+        .then(product => {
+            console.log('Product data:', product); // Thêm log để kiểm tra dữ liệu
             const productDetail = document.getElementById('product-detail');
-            const product = data;
-
-            productDetail.innerHTML += `
-                <div class="slideshow-container">
-                    <div class="mySlides">
-                        <img src="${product.thumbnail_image}" style="width:30%">
-                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            productDetail.innerHTML = `
+                <div class="product-container">
+                    <div class="product-gallery">
+                        <div class="slideshow-container">
+                            <div class="mySlides">
+                                <img src="${product.thumbnail_image}" alt="${product.product_name}">
+                            </div>
+                            <div class="mySlides">
+                                <img src="${product.detail_image1}" alt="${product.product_name}">
+                            </div>
+                            <div class="mySlides">
+                                <img src="${product.detail_image2}" alt="${product.product_name}">
+                            </div>
+                            <div class="mySlides">
+                                <img src="${product.detail_image3}" alt="${product.product_name}">
+                            </div>
+                            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                        </div>
+                        <div id="slide-number"></div>
+                        <div class="thumbnail-grid">
+                            <img class="thumbnail" src="${product.thumbnail_image}" onclick="currentSlide(1)">
+                            <img class="thumbnail" src="${product.detail_image1}" onclick="currentSlide(2)">
+                            <img class="thumbnail" src="${product.detail_image2}" onclick="currentSlide(3)">
+                            <img class="thumbnail" src="${product.detail_image3}" onclick="currentSlide(4)">
+                        </div>
                     </div>
-                    <div class="mySlides">
-                        <img src="${product.detail_image1}" style="width:30%">
-                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                    <div class="product-info">
+                        <h1 class="product-title">${product.product_name}</h1>
+                        <div class="product-price">
+                            <span class="current-price">${Number(product.price).toLocaleString()} VND</span>
+                        </div>
+                        <div class="product-actions">
+                            <button class="buy-now-btn" onclick="buyNow(${product.product_id})">
+                                <i class="fas fa-bolt"></i> Mua ngay
+                            </button>
+                            <button class="add-to-cart-btn" onclick="addToCart(event, ${product.product_id}, 1)">
+                                <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                            </button>
+                            <button class="continue-shopping-btn" onclick="window.location.href='home.html'">
+                                <i class="fas fa-arrow-left"></i> Tiếp tục mua hàng
+                            </button>
+                        </div>
+                        <div class="product-policies">
+                            <div class="policy-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Bảo hành chính hãng 12 tháng</span>
+                            </div>
+                            <div class="policy-item">
+                                <i class="fas fa-sync"></i>
+                                <span>Đổi trả trong 7 ngày</span>
+                            </div>
+                            <div class="policy-item">
+                                <i class="fas fa-truck"></i>
+                                <span>Giao hàng toàn quốc</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mySlides">
-                        <img src="${product.detail_image2}" style="width:30%">
-                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                    </div>
-                    <div class="mySlides">
-                        <img src="${product.detail_image3}" style="width:30%">
-                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                    </div>  
-                </div>
-
-                <div id="slide-number" style="text-align: center; margin-top: 10px;"></div>
-                <div class ="thumbnail_grid">
-                    <img class="thumbnail" src="${product.thumbnail_image}" style="width:40% onclick="currentSlide(1)">
-                    <img class="thumbnail" src="${product.detail_image1}" style="width:20%" onclick="currentSlide(2)">
-                    <img class="thumbnail" src="${product.detail_image2}" style="width:20%" onclick="currentSlide(3)">
-                    <img class="thumbnail" src="${product.detail_image3}" style="width:20%" onclick="currentSlide(4)">
-                </div>
-                <div class="product-info">
-                    <h4>${product.product_name}</h4>
-                    <p>${product.description}</p>
-                    <p>Giá: <strong>${Number(product.price).toLocaleString()} triệu VND</strong></p>
-                    <button onclick="addToCart(${productId}, 1)">Thêm vào giỏ hàng</button>
                 </div>
             `;
-            // slideCount = document.getElementsByClassName("mySlides").length; // Cập nhật slideCount sau khi thêm HTML
-            showSlides();   
+            showSlides();
         })
-        .catch(error => console.error('Error fetching product detail:', error)); 
-});
-function getToken() {
-    return localStorage.getItem('token');
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Không thể tải thông tin sản phẩm.',
+                confirmButtonText: 'OK'
+            });
+        });
 }
-function addToCart(productId, quantity) {
-    const token = getToken();
 
+function addToCart(event, productId, quantity) {
+    if (event) {
+        event.stopPropagation();
+    }
+    
+    const token = localStorage.getItem('token');
+    console.log('Adding to cart:', {productId, quantity, token}); // Thêm log để debug
+    
     if (!token) {
-        alert('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!',
+            confirmButtonText: 'OK'
+        });
         return;
     }
-    const apiUrl = 'http://localhost/CuaHangDT/api/gioHang/add_to_cart.php';
 
-    fetch(apiUrl, {
+    fetch('http://localhost/CuaHangDT/api/gioHang/add_to_cart.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-            product_id: productId,
-            quantity: quantity
+            product_id: parseInt(productId),
+            quantity: parseInt(quantity)
+        })
+    })
+    .then(response => {
+        console.log('Response status:', response.status); // Thêm log để kiểm tra response
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data); // Thêm log để kiểm tra data
+        if (data.message === "Product added to cart successfully.") {
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: 'Sản phẩm đã được thêm vào giỏ hàng!',
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                timer: 1500
+            });
+        } else {
+            throw new Error(data.message || 'Lỗi không xác định');
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Đã xảy ra lỗi khi thêm vào giỏ hàng.',
+            confirmButtonText: 'OK'
+        });
+    });
+}
+
+function buyNow(productId) {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Bạn cần đăng nhập để mua hàng!',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+
+    fetch('http://localhost/CuaHangDT/api/gioHang/add_to_cart.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            product_id: parseInt(productId),
+            quantity: 1
         })
     })
     .then(response => response.json())
     .then(data => {
         if (data.message === "Product added to cart successfully.") {
-            alert('Thêm vào giỏ hàng thành công!');
+            window.location.href = 'cart.html';
         } else {
-            alert('Không thể thêm vào giỏ hàng.');
+            throw new Error(data.message || 'Lỗi không xác định');
         }
     })
-    .catch(error => console.error('Lỗi:', error));
+    .catch(error => {
+        console.error('Lỗi:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Đã xảy ra lỗi khi thêm vào giỏ hàng.',
+            confirmButtonText: 'OK'
+        });
+    });
 }
+
+function logout() {
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+}
+
 
 

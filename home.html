@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,83 +7,149 @@
     <link rel="stylesheet" href="home.css">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
-    <script src="home.js"></script>
     <style>        
         .products {
-            position: relative;
-        }
-        
-        .products-container {
-            position: relative;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            padding: 20px;
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 40px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            margin: 0 auto;
         }
         
-        .products-wrapper {
+        .filter-section {
+            padding: 15px;
+            background: #f5f5f5;
+            margin-bottom: 20px;
+        }
+
+        .filter-section select, .filter-section button {
+            padding: 8px;
+            margin: 0 10px;
+        }
+
+        .pagination {
             display: flex;
             justify-content: center;
-            padding: 20px;
-            gap: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .product {
-            flex: 0 0 calc((100% - 80px) / 5);
-            max-width: 220px;
-            min-width: 0;
-            text-align: center;
-        }
-        
-        .nav-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 28px;
-            height: 28px;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0;
             background: white;
-            border: 1px solid #ddd;
-            border-radius: 50%;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pagination button {
+            min-width: 40px;
+            height: 40px;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-size: 16px;
             cursor: pointer;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1;
-            transition: background-color 0.3s ease;
+            transition: all 0.2s;
         }
-        
-        .nav-button:not(.disabled):hover {
-            background-color: #f5f5f5;
+
+        .pagination button.active {
+            background: #007bff;
+            color: white;
         }
-        
-        .nav-button.prev {
-            left: 6px;
+
+        .pagination button:hover:not(.active):not(:disabled) {
+            background: #f0f0f0;
         }
-        
-        .nav-button.next {
-            right: 6px;
-        }
-        
-        .nav-button.disabled {
-            opacity: 0.5;
+
+        .pagination button:disabled {
+            color: #ccc;
             cursor: not-allowed;
         }
-        
+
+        .pagination .dots {
+            color: #666;
+            padding: 0 8px;
+        }
+
+        .product {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 450px;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .product img {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            margin: 0 auto 15px;
+        }
+
+        .product h4 {
+            margin: 8px 0;
+            font-size: 16px;
+            height: 24px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .product h4 a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .product .product-price {
+            font-size: 18px;
+            color: #e94444;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .product button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: auto;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        .product button:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 
 <body>
     <header>
+        <!-- Header code remains the same -->
         <div id="top-header">
             <ul>
                 <li id="greeting" style="display: none;">Xin chào <a id="username">info</a></li>
                 <li id="login-link"><a href="login.html">Đăng nhập</a></li>
                 <li id="account-link" style="display: none;"><a href="infomationuser.html">Tài khoản của tôi</a></li>
-                <li id="logout-link" style="display: none;"><a href="login.html" onclick="logout()">Đăng xuất</a>
+                <li id="logout-link" style="display: none;"><a href="login.html" onclick="logout()">Đăng xuất</a></li>
             </ul>
         </div>
         <div id="header">
@@ -102,82 +167,297 @@
             </div>
         </div>
     </header>
+
     <nav>
         <ul>
             <li><a href="home.html">Trang chủ</a></li>
-            <!-- <li><a href="voucher.html">Khuyến mãi</a></li> -->
+            <li><a href="voucher.html">Khuyến mãi</a></li>
             <li><a href="Laptop.html">Laptop</a></li>
             <li><a href="Smartphone.html">Smartphone</a></li>
             <li><a href="photograph.html">Máy ảnh</a></li>
             <li><a href="spareparts.html">Phụ kiện</a></li>
         </ul>
     </nav>
+
     <section>
-        <h3>Sản phẩm mới</h3>
-        <div class="products-container">
-            <button class="nav-button prev">‹</button>
-            <div class="products" id="product-list">
-                <!-- <button class="add-to-cart-btn" onclick="addToCart(event)" >Thêm vào giỏ hàng</button> -->
-            </div>
-            <button class="nav-button next">›</button>
+        <div class="filter-section">
+            <select id="sort-by">
+                <option value="price">Giá</option>
+                <option value="product_name">Tên</option>
+                <option value="created_at">Ngày tạo</option>
+            </select>
+            <select id="sort-order">
+                <option value="ASC">Tăng dần</option>
+                <option value="DESC">Giảm dần</option>
+            </select>
+            <select id="items-per-page">
+                <option value="10">10 sản phẩm</option>
+                <option value="15">15 sản phẩm</option>
+                <option value="20">20 sản phẩm</option>
+            </select>
+            <button onclick="applyFilters()">Lọc</button>
         </div>
-        <div id="history-container" 
-        style="display: none; position: absolute; background: #fff; border: 1px solid #ddd; border-radius: 5px; max-width: 300px; z-index: 1000;">
-        </div>
+
+        <div class="products" id="product-list"></div>
+        <div class="pagination" id="pagination"></div>
     </section>
 
-    
     <footer>
-        <br>
-        <br/>
-        <p>&copy; 2024 Trang Bán Hàng. </p>
+        <p>&copy; 2024 Trang Bán Hàng.</p>
     </footer>
 
     <script>
-        // Giả sử token của bạn được lưu trong localStorage với tên là 'jwtToken'
-        const token = localStorage.getItem('token');
+        let currentPage = 1;
+        let totalPages = 1;
+        let currentCategory = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchCategories(); 
+            fetchProducts();
+            setupAuth();
+        });
+
+        function setupAuth() {
+            const token = localStorage.getItem('token');
+            const username = getUsernameFromToken(token);
+            
+            if (username) {
+                document.getElementById('username').innerText = username;
+                document.getElementById('greeting').style.display = 'inline';
+                document.getElementById('account-link').style.display = 'inline';
+                document.getElementById('login-link').style.display = 'none';
+                document.getElementById('logout-link').style.display = 'inline';
+            } else {
+                document.getElementById('greeting').style.display = 'none';
+                document.getElementById('account-link').style.display = 'none';
+                document.getElementById('login-link').style.display = 'inline';
+                document.getElementById('logout-link').style.display = 'none';
+            }
+        }
 
         function getUsernameFromToken(token) {
-            if (!token){
-                return null;
-            } 
-            // Phân tách các phần của JWT (header, payload, signature)
+            if (!token) return null;
             const payloadBase64 = token.split('.')[1];
-
-            if (!payloadBase64) {
-                return null;
-            } 
-
-            // Giải mã payload từ base64
+            if (!payloadBase64) return null;
             const payload = JSON.parse(atob(payloadBase64));
-
-            // Lấy `username` từ payload
             return payload.data?.username || null;
         }
 
-        // Sử dụng hàm để lấy username
-        const username = getUsernameFromToken(token);
-        if (username) {
-            document.getElementById('username').innerText = username;
-            document.getElementById('greeting').style.display = 'inline';
-            document.getElementById('account-link').style.display = 'inline';
-            document.getElementById('login-link').style.display = 'none';
-            document.getElementById('logout-link').style.display = 'inline';
-        } else {
-            document.getElementById('greeting').style.display = 'none';
-            document.getElementById('account-link').style.display = 'none';
-            document.getElementById('login-link').style.display = 'inline';
-            document.getElementById('logout-link').style.display = 'none';
-        }
-
         function logout() {
-            // Xóa token khỏi localStorage
             localStorage.removeItem('token');
-            // Chuyển hướng đến trang đăng nhập hoặc làm mới trang
             window.location.href = 'login.html';
         }
+
+        function fetchProducts(page = 1) {
+            currentCategory = null;
+            currentPage = page;
+            const limit = document.getElementById('items-per-page').value;
+            const sortBy = document.getElementById('sort-by').value;
+            const sortOrder = document.getElementById('sort-order').value;
+
+            const url = `http://localhost/CuaHangDT/api/sanpham/read.php?page=${page}&limit=${limit}&sort_by=${sortBy}&sort_order=${sortOrder}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('API Response:', data);
+                    renderProducts(data.data);
+                    renderPagination(data.total_pages);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function fetchCategories() {
+            fetch('http://localhost/CuaHangDT/api/danhmucsp/read.php')
+                .then(response => response.json())
+                .then(data => {
+                    renderCategories(data.data);
+                })
+                .catch(error => console.error('Error fetching categories:', error));
+        }
+
+        function renderCategories(categories) {
+            const categoryMenu = document.getElementById('category-menu');
+            // Giữ lại link "Tất cả"
+            const allProductsLink = categoryMenu.innerHTML;
+            
+            categoryMenu.innerHTML = allProductsLink + categories.map(category => `
+                <li><a href="#" onclick="fetchProductsByCategory(${category.category_id}); return false;">
+                    ${category.category_name}
+                </a></li>
+            `).join('');
+        }
+
+        function fetchProductsByCategory(categoryId) {
+            currentCategory = categoryId;
+            const limit = document.getElementById('items-per-page').value;
+            const sortBy = document.getElementById('sort-by').value;
+            const sortOrder = document.getElementById('sort-order').value;
+
+            const url = `http://localhost/CuaHangDT/api/sanpham/read.php?category_id=${categoryId}&page=${currentPage}&limit=${limit}&sort_by=${sortBy}&sort_order=${sortOrder}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    renderProducts(data.data);
+                    renderPagination(data.total_pages);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function applyFilters() {
+            if (currentCategory) {
+                fetchProductsByCategory(currentCategory);
+            } else {
+                fetchProducts(currentPage);
+            }
+        }
+
+        function renderProducts(products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = products.map(product => `
+                <div class="product" onclick="redirectToProduct(${product.product_id})">
+                    <img src="${product.thumbnail_image}" alt="${product.product_name}">
+                    <h4><a href="#">${product.product_name}</a></h4>
+                    <p class="product-price">Giá: ${Number(product.price).toLocaleString()} VND</p>
+                    <div><button onclick="addToCart(event, ${product.product_id}, 1)">Thêm vào giỏ hàng</button></div>
+                </div>
+            `).join("");
+        }
+
+        function renderPagination(total) {
+            totalPages = total;
+            const pagination = document.getElementById('pagination');
+            let buttons = '';
+            
+            // First and Previous buttons
+            buttons += `
+                <button onclick="changePage(1)" ${currentPage === 1 ? 'disabled' : ''}>«</button>
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>‹</button>
+            `;
+            
+            // First page
+            buttons += `<button onclick="changePage(1)" ${currentPage === 1 ? 'class="active"' : ''}>1</button>`;
+            
+            // Handle dots and middle pages
+            if (currentPage > 3) {
+                buttons += `<span class="dots">...</span>`;
+            }
+            
+            for (let i = Math.max(2, currentPage - 1); i <= Math.min(total - 1, currentPage + 1); i++) {
+                if (i === currentPage) {
+                    buttons += `<button class="active">${i}</button>`;
+                } else {
+                    buttons += `<button onclick="changePage(${i})">${i}</button>`;
+                }
+            }
+            
+            if (currentPage < total - 2) {
+                buttons += `<span class="dots">...</span>`;
+            }
+            
+            // Last page
+            if (total > 1) {
+                buttons += `<button onclick="changePage(${total})" ${currentPage === total ? 'class="active"' : ''}>${total}</button>`;
+            }
+            
+            // Next and Last buttons
+            buttons += `
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === total ? 'disabled' : ''}>›</button>
+                <button onclick="changePage(${total})" ${currentPage === total ? 'disabled' : ''}>»</button>
+            `;
+            
+            pagination.innerHTML = buttons;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            if (currentCategory) {
+                fetchProductsByCategory(currentCategory, page);
+            } else {
+                fetchProducts(page);
+            }
+        }
+
+        function redirectToProduct(productId) {
+            window.location.href = `informationproduct.html?id=${productId}`;
+        }
+
+        function addToCart(event, productId, quantity) {
+    event.stopPropagation();
+    const button = event.target;
+    
+    button.classList.add('button-click');
+    setTimeout(() => {
+        button.classList.remove('button-click');
+    }, 200);
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Bạn chưa đăng nhập, Vui lòng đăng nhập để thêm!',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+
+    fetch('http://localhost/CuaHangDT/api/gioHang/add_to_cart.php', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({ product_id: productId, quantity: quantity })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.message === "Product added to cart successfully.") {
+            const cartCountElement = document.getElementById('cart-count');
+            const currentCount = parseInt(cartCountElement.textContent || 0);
+            cartCountElement.textContent = currentCount + quantity;
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Thành công!',
+                text: 'Sản phẩm đã được thêm vào giỏ hàng thành công!',
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                timer: 1500
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Đã xảy ra lỗi khi thêm vào giỏ hàng.',
+            confirmButtonText: 'OK'
+        });
+    });
+}
+        function searchProducts() {
+            const searchValue = document.getElementById("search-input").value.toLowerCase();
+            const products = document.querySelectorAll(".product");
+            let found = false;
+            
+            products.forEach(product => {
+                const productName = product.querySelector("h4 a").innerText.toLowerCase();
+                if (productName.includes(searchValue)) {
+                    product.style.display = "block";
+                    found = true;
+                } else {
+                    product.style.display = "none";
+                }
+            });
+            
+            if (!found) {
+                alert('Không tìm thấy sản phẩm phù hợp.');
+            }
+        }
     </script>
-
 </body>
-
 </html>

@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giỏ hàng</title>
     <link rel="stylesheet" href="cart.css">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
-
     <script src="cart.js"></script>
     
     <style>
@@ -137,12 +134,7 @@
         async function checkUserInfo() {
         const token = localStorage.getItem('token');
         if (!token) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Bạn cần đăng nhập để tiếp tục!',
-                confirmButtonText: 'OK'
-            });
+            alert("Bạn cần đăng nhập để tiếp tục.");
             return;
         }
 
@@ -160,36 +152,23 @@
 
                 // Kiểm tra thông tin người dùng
                 if (!data.address || !data.phone_number) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Thông tin chưa đầy đủ',
-                        text: 'Thông tin của bạn còn thiếu. Vui lòng cập nhật để tiếp tục.',
-                        timer: 5000,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.href = 'infomationuser.html';
-                    });
+                    alert("Thông tin của bạn còn thiếu. Vui lòng cập nhật để tiếp tục.");
+                    
+                    // Sau 5 giây, chuyển hướng đến trang cập nhật thông tin
+                    setTimeout(() => {
+                        window.location.href = 'infomationuser.html'; // Thay đổi thành đường dẫn trang cập nhật thông tin của bạn
+                    }, 5000);
                 } else {
                     /// Gọi API thanh toán
                     const fullAddress = `${data.address}, ${data.city}`
                     await processPayment(fullAddress);
                 }
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi!',
-                    text: 'Không thể lấy thông tin người dùng.',
-                    confirmButtonText: 'OK'
-                });
+                alert("Không thể lấy thông tin người dùng.");
             }
         } catch (error) {
             console.error("Lỗi:", error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: 'Có lỗi xảy ra khi kết nối đến server.',
-                confirmButtonText: 'OK'
-            });
+            alert("Có lỗi xảy ra khi kết nối đến server.");
         }
     }
 
@@ -209,28 +188,14 @@
 
             if (response.ok) {
                 const result = await response.json();
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thanh toán thành công!',
-                    text: 'Mã đơn hàng của bạn là: ' + result.order_id
-                });
+                alert("Thanh toán thành công! Mã đơn hàng của bạn là: " + result.order_id);
             } else {
                 const errorData = await response.json();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi!',
-                    text: 'Lỗi khi thanh toán: ' + errorData.message,
-                    confirmButtonText: 'OK'
-                });
+                alert("Lỗi khi thanh toán: " + errorData.message);
             }
         } catch (error) {
             console.error("Lỗi:", error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi!',
-                text: 'Có lỗi xảy ra khi xử lý thanh toán.',
-                confirmButtonText: 'OK'
-            });
+            alert("Có lỗi xảy ra khi xử lý thanh toán.");
         }
     }
 

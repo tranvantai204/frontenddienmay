@@ -16,6 +16,13 @@
 }
 
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     background: #333;
     color: #fff;
     align-items: center;
@@ -88,6 +95,13 @@ nav ul {
     font-family: Arial, Helvetica, sans-serif;
 }
 nav {
+    position: fixed;
+    top: 120px;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 999;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     background: #444;
 }
 nav a,li{
@@ -96,17 +110,22 @@ nav a,li{
     margin: 0 15px;
 }
 footer {
-    text-align: center;
-    background: #333;
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-    width: auto;
-    min-height: 100px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    padding: 10px 0;
 }
 section {
+    position: relative;
+    z-index: 1;
     padding: 20px;
     background: #fff;
     margin: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 60px;
 }

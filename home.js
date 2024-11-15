@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let allProducts = [];
     let currentIndex = 0;
-    const productsToShow = 5;
+    const productsToShow = 20;
     let isAnimating = false;
     
     function fetchProducts() {
