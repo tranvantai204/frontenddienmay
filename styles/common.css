@@ -1,0 +1,146 @@
+/* Thống nhất style cho sidebar */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #001f3f;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    padding: 12px 15px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.sidebar li:hover {
+    background-color: #4a3d93;
+}
+
+.sidebar li.active {
+    background-color: #4a3d93;
+}
+
+/* Content area */
+.content {
+    margin-left: 270px;
+    padding: 20px;
+    background-color: #fff;
+    min-height: calc(100vh - 40px);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.header h3 {
+    color: #001f3f;
+    margin: 0;
+    font-size: 18px;
+}
+
+/* User info */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info p {
+    margin: 0;
+    color: #4a3d93;
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: #4a3d93;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+
+/* Search and filter */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar input,
+.search-bar select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+
+.search-bar input:focus,
+.search-bar select:focus {
+    border-color: #4a3d93;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #4a3d93;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

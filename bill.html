@@ -5,128 +5,232 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh Sách Đơn Hàng</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="styles/common.css">
+
 </head>
 
 <body>
     <style>
-        /* Bạn có thể sử dụng các kiểu CSS từ trang trước hoặc điều chỉnh theo ý muốn */
         body {
-            font-family: 'Noto Sans', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-        }
+    font-family: 'Noto Sans', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    body {
+    font-family: 'Noto Sans', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #001f3f;
-            color: white;
-            padding: 20px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #001f3f;
+    color: white;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
-        .sidebar h2 {
-            color: #ffffff;
-            margin-bottom: 20px;
-        }
+.sidebar h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
 
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-        }
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
 
-        .sidebar li {
-            padding: 10px;
-            cursor: pointer;
-        }
+.sidebar li {
+    padding: 10px;
+    cursor: pointer;
+}
 
-        .sidebar li:hover {
-            background-color: #4a3d93;
-        }
+.sidebar li:hover {
+    background-color: #4a3d93;
+}
 
-        .sidebar li.active {
-            background-color: #4a3d93;
-        }
+.sidebar li.active {
+    background-color: #4a3d93;
+}
 
-        /* Content Area */
-        .content {
-            margin-left: 270px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
+/* Content Area */
+.content {
+    margin-left: 270px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
 
-        .header h3 {
-            font-family: 'Roboto Mono', monospace;
-            color: #001f3f;
-            margin-bottom: 20px;
-        }
+.header h3 {
+    font-family: 'Roboto Mono', monospace;
+    color: #001f3f;
+    margin-bottom: 20px;
+}
 
-        .table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
+.button, .btn {
+    background-color: #4a3d93;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
 
-        .table th, .table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+.button:hover, .btn:hover {
+    background-color: #03b300;
+}
 
-        .table th {
-            background-color: #f4f4f4;
-        }
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
 
-        .custom-swal-container {
-            z-index: 9999;
-        }
-        
-        .custom-swal-popup {
-            font-size: 0.9rem;
-        }
-        
-        .table {
-            margin-bottom: 0;
-        }
-        
-        .table th, .table td {
-            padding: 0.5rem;
-        }
-        
-        .text-right {
-            text-align: right;
-        }
-        
-        .text-center {
-            text-align: center;
-        }
+.table th, .table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f4f4f4;
+}
+
+.search-bar input {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 80%;
+    max-width: 600px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    border-radius: 8px;
+}
+
+.modal-content {
+    padding: 20px;
+    background-color: #fefefe;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/* Modal Close Button */
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+}
+
+.close:hover {
+    color: black;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #e0e0e0;
+    color: #333;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button.active {
+    background-color: #4a3d93;
+    color: white;
+    font-weight: bold;
+}
+
+.pagination button:hover:not(.active):not(:disabled) {
+    background-color: #3c3176;
+    color: white;
+}
+
+.pagination button:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+}
+
+    
     </style>
 
 <div class="sidebar">
     <h2>IPOS CALL CENTER</h2>
+    <ul><li>Dashboard</li>
     <ul>
-        <li>Dashboard</li>
-        <li onclick="location.href='productad.html'">Quản lý sản phẩm</li>
-        <li onclick="location.href='display.html'">Quản lý Tài Khoản</li>
+        <li onclick="location.href='productad.html'">Quản Lý Sản Phẩm</li>
+        <li onclick="location.href='display.html'">Quản Lý Tài Khoản</li>
         <li class="active">Quản Lý Hóa Đơn</li>
+        <li onclick="location.href='categoryad.html'">Quản Lý Danh Mục</li>
+        </ul>
     </ul>
+
 </div>
 
     <div class="content">
         <div class="header">
-            <h3>Dashboard / Đơn hàng / Danh sách đơn hàng</h3>
+            <h3>Dashboard / Quản Lý Đơn Hàng</h3>
             <div class="user-info">
                 <p id="userName"></p>
                 <button id="logoutButton" class="btn btn-danger">Đăng xuất</button>
@@ -147,12 +251,18 @@
             </thead>
             <tbody id="orderTable"></tbody>
         </table>
+        <div class="pagination">
+            <button id="prev-btn" disabled>Quay lại</button>
+            <button id="next-btn">Tiếp</button>
+        </div>
     </div>
 
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        let currentPage = 1;
+const limit = 10; // Số sản phẩm trên mỗi trang
         // Đăng xuất
         document.getElementById('logoutButton').addEventListener('click', function() {
             window.location.href = 'login.html';
@@ -365,6 +475,55 @@
             currency: 'VND' 
         }).format(amount);
     }
+    function updatePagination(totalPages, currentPage) {
+    const pagination = document.querySelector('.pagination');
+    pagination.innerHTML = ''; // Xóa các nút phân trang cũ
+
+    // Nút "Quay lại"
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Quay lại';
+    prevButton.disabled = currentPage === 1;
+    prevButton.className = currentPage === 1 ? 'active' : '';
+    prevButton.onclick = () => changePage(currentPage - 1);
+    pagination.appendChild(prevButton);
+
+    // Nút số trang
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.className = i === currentPage ? 'active' : '';
+        pageButton.disabled = i === currentPage;
+        pageButton.onclick = () => changePage(i);
+        pagination.appendChild(pageButton);
+    }
+
+    // Nút "Tiếp"
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Tiếp';
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.className = currentPage === totalPages ? 'active' : '';
+    nextButton.onclick = () => changePage(currentPage + 1);
+    pagination.appendChild(nextButton);
+}
+
+// Thêm sự kiện lắng nghe cho nút Previous
+document.getElementById('prev-btn').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--; // Giảm trang hiện tại
+        fetchOrders(currentPage); // Gọi lại sản phẩm cho trang mới
+    }
+});
+
+// Thêm sự kiện lắng nghe cho nút Next
+document.getElementById('next-btn').addEventListener('click', () => {
+    currentPage++; // Tăng trang hiện tại
+    fetchOrders(currentPage); // Gọi lại sản phẩm cho trang mới
+});
+
+// Tải sản phẩm khi trang được tải
+document.addEventListener('DOMContentLoaded', () => {
+    fetchOrders(currentPage);
+});
     </script>
 </body>
 

@@ -17,6 +17,7 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #f8f8f8;
+    padding-top: 170px;
 }
 
 
@@ -25,6 +26,13 @@ body {
 header {
     background: #333;
     color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 #top-header {
@@ -93,6 +101,13 @@ header {
 
 nav {
     background: #444;
+    position: fixed;
+    top: 120px;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 999;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 nav ul {
@@ -119,6 +134,9 @@ section {
     margin: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 60px;
 }
 
 
@@ -244,9 +262,14 @@ footer {
     padding: 20px;
     background: #333;
     color: #fff;
-    position: relative;
+    position: fixed;
     bottom: 0;
-    width: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    padding: 10px 0;
 }
 
 
