@@ -72,6 +72,35 @@
             background-color: #007a63;
         }
 
+        .continue-shopping {
+            background-color: #28a745;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            float: right;
+            margin-right: 15px;
+        }
+
+        .continue-shopping:hover {
+            background-color: #218838;
+            transform: translateX(-5px);
+        }
+
+        .continue-shopping i {
+            margin-right: 5px;
+        }
+
+        /* Đảm bảo responsive */
+        @media (max-width: 768px) {
+            .continue-shopping {
+                float: none;
+                display: block;
+                margin: 10px auto;
+                text-align: center;
+                width: fit-content;
+            }
+        }
 
     </style>
 
@@ -94,15 +123,10 @@
             <div class="cart"><a href="cart.html"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></div>
         </div>
     </header>
-    <nav>
-        <ul>
-            <li><a href="home.html">Trang chủ</a></li>
-            <li><a href="voucher.html">Khuyến mãi</a></li>
-            <li><a href="Laptop.html">Laptop</a></li>
-            <li><a href="Smartphone.html">Smartphone</a></li>
-            <li><a href="photograph.html">Máy ảnh</a></li>
-            <li><a href="spareparts.html">Phụ kiện</a></li>
-        </ul>
+    <nav class="navbar">
+        <a href="home.html" class="nav-link continue-shopping">
+            <i class="fas fa-arrow-left"></i> Tiếp tục mua hàng
+        </a>
     </nav>
     <section>
         <h3>Giỏ Hàng Của Bạn</h3>
