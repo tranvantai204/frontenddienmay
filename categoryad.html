@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Sản Phẩm</title>
+    <link rel="stylesheet" href="styles/common.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+
+
+body {
+    font-family: 'Noto Sans', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #001f3f;
+    color: white;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    background-color: #4a3d93;
+}
+
+.sidebar li.active {
+    background-color: #4a3d93;
+}
+
+/* Content Area */
+.content {
+    margin-left: 270px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header h3 {
+    font-family: 'Roboto Mono', monospace;
+    color: #001f3f;
+    margin-bottom: 20px;
+}
+
+.button, .btn {
+    background-color: #4a3d93;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button:hover, .btn:hover {
+    background-color: #03b300;
+}
+
+.table-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.search-bar input {
+    width: 200px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    width: 60%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/* Modal Close Button */
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    float: right;
+}
+
+.close:hover {
+    color: black;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.pagination button:hover {
+    background-color: #45a049;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.category-id, .category-name, .category-description {
+    padding: 20px 200px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+        
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>IPOS CALL CENTER</h2>
+        <ul><li>Dashboard</li>
+        <ul>
+
+            <li onclick="location.href='productad.html'">Quản Lý Sản Phẩm</li>
+            <li onclick="location.href='display.html'">Quản Lý Tài Khoản</li>
+            <li onclick="location.href='bill.html'">Quản Lý Hóa Đơn</li>
+            <li class="active">Quản Lý Danh Mục</li>
+            <li onclick="location.href='supplierAd.html'">Quản Lý Nhà Cung Cấp</li>
+        </ul>
+    </ul>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h3>Dashboard /  Quản lý danh mục</h3>
+            <button onclick="openModal('addCategoryModal')" class="button">+ Thêm danh mục</button>
+        </div>
+
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên danh mục</th>
+                        <th>Mô tả</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="categoryTable">
+                    <!-- Dữ liệu danh mục sẽ được hiển thị ở đây -->
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            <button id="prev-btn" disabled>Quay lại</button>
+            <button id="next-btn">Tiếp</button>
+        </div>
+    </div>
+        
+    </div>
+
+    
+
+    <!-- Modal Sửa danh mục -->
+    <div id="editCategoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editCategoryModal')">&times;</span>
+            <h3>Sửa Danh Mục</h3>
+            <div class="form-group">
+                <label for="editCategoryName">Tên danh mục:</label>
+                <input type="text" id="editCategoryName">
+            </div>
+            <div class="form-group">
+                <label for="editCategoryDescription">Mô tả:</label>
+                <textarea id="editCategoryDescription"></textarea>
+            </div>
+            <button onclick="saveCategoryChanges()" class="button">Lưu Thay Đổi</button>
+        </div>
+    </div>
+    
+    <div id="category-list"></div>
+
+    <!-- Modal Thêm danh mục -->
+    <div id="addCategoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addCategoryModal')">&times;</span>
+            <h3>Thêm Danh Mục Mới</h3>
+            <div class="form-group">
+                <label for="newCategoryName">Tên danh mục:</label>
+                <input type="text" id="newCategoryName">
+            </div>
+            <div class="form-group">
+                <label for="newCategoryDescription">Mô tả:</label>
+                <textarea id="newCategoryDescription"></textarea>
+            </div>
+            <button onclick="addCategory()" class="button">Thêm Danh Mục</button>
+        </div>
+    </div>
+
+    <script src="#"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let currentPage = 1;
+        const limit = 10; // Số sản phẩm trên mỗi trang
+
+
+
+
+
+        function fetchCategories() {
+            fetch('http://localhost/CuaHangDT/api/danhMucSP/read.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Fetched categories:', data); // Log data để debug
+                const categoryTable = document.getElementById('categoryTable');
+                categoryTable.innerHTML = '';
+
+                if (data.data && data.data.length > 0) { // Kiểm tra nếu data có thuộc tính data
+                    data.data.forEach(category => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="category-id">${category.category_id}</td>
+                            <td class="category-name">${category.category_name}</td>
+                            <td class="category-description">${category.description}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="editCategory(${category.category_id})">
+                                    Sửa
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteCategory(${category.category_id})">
+                                    Xóa
+                                </button>
+                            </td>
+                        `;
+                        categoryTable.appendChild(row);
+                    });
+                } else {
+                    categoryTable.innerHTML = '<tr><td colspan="4">Không có danh mục nào.</td></tr>';
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy danh mục:', error);
+            });
+        }
+
+        window.onload = () => fetchCategories();
+
+function updatePagination(totalPages, currentPage) {
+    const pagination = document.querySelector('.pagination');
+    pagination.innerHTML = ''; // Xóa các nút phân trang cũ
+
+    // Nút "Quay lại"
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Quay lại';
+    prevButton.disabled = currentPage === 1;
+    prevButton.className = currentPage === 1 ? 'active' : '';
+    prevButton.onclick = () => changePage(currentPage - 1);
+    pagination.appendChild(prevButton);
+
+    // Nút số trang
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.className = i === currentPage ? 'active' : '';
+        pageButton.disabled = i === currentPage;
+        pageButton.onclick = () => changePage(i);
+        pagination.appendChild(pageButton);
+    }
+
+    // Nút "Tiếp"
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Tiếp';
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.className = currentPage === totalPages ? 'active' : '';
+    nextButton.onclick = () => changePage(currentPage + 1);
+    pagination.appendChild(nextButton);
+}
+
+// Thêm s kiện lắng nghe cho nút Previous
+document.getElementById('prev-btn').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--; // Giảm trang hiện tại
+        fetchOrders(currentPage); // Gọi lại sản phẩm cho trang mới
+    }
+});
+
+// Thêm sự kiện lắng nghe cho nút Next
+document.getElementById('next-btn').addEventListener('click', () => {
+    currentPage++; // Tăng trang hiện tại
+    fetchOrders(currentPage); // Gọi lại sản phẩm cho trang mới
+});
+
+// Tải sản phẩm khi trang được tải
+document.addEventListener('DOMContentLoaded', () => {
+    fetchOrders(currentPage);
+});
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+function createCategory(categoryName, description) {
+    fetch('http://localhost/CuaHangDT/api/danhMucSP/create.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ category_name: categoryName, description: description })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.message && data.message.toLowerCase() === 'done') {
+            Swal.fire(
+                'Thành công!',
+                'Danh mục mới đã được thêm!',
+                'success'
+            );
+            fetchCategories(); // Tải lại danh sách danh mục
+            closeModal('addCategoryModal');
+        } else {
+            Swal.fire(
+                'Lỗi!',
+                'Có lỗi xảy ra khi thêm danh mục: ' + (data.message || 'Unknown error'),
+                'error'
+            );
+        }
+    })
+    .catch(error => {
+        console.error('Error creating category:', error);
+        Swal.fire(
+            'Lỗi!',
+            'Có lỗi xảy ra khi thêm danh mục. Vui lòng kiểm tra console để biết thêm thông tin.',
+            'error'
+        );
+    });
+}
+
+function updateCategory(categoryId, categoryName, description) {
+    fetch(`http://localhost/CuaHangDT/api/danhMucSP/update.php?category_id=${categoryId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ category_name: categoryName, description: description })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        fetchCategories(); // Tải lại danh sách danh mục
+    })
+    .catch(error => console.error('Error updating category:', error));
+}
+
+function deleteCategory(categoryId) {
+    Swal.fire({
+        title: 'Bạn có chắc chắn?',
+        text: "Bạn sẽ không thể hoàn tác thao tác này!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vâng, xóa nó!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`http://localhost/CuaHangDT/api/danhMucSP/delete.php?category_id=${categoryId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire(
+                    'Đã xóa!',
+                    'Danh mục đã được xóa.',
+                    'success'
+                );
+                fetchCategories(); // Tải lại danh sách danh mục
+            })
+            .catch(error => {
+                console.error('Error deleting category:', error);
+                Swal.fire(
+                    'Lỗi!',
+                    'Có lỗi xảy ra khi xóa danh mục.',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
+function saveCategoryChanges() {
+    const categoryId = document.getElementById('editCategoryId').value;
+    const updatedCategory = {
+        category_name: document.getElementById('editCategoryName').value,
+        description: document.getElementById('editCategoryDescription').value
+    };
+
+    fetch(`http://localhost/CuaHangDT/api/danhMucSP/update.php?category_id=${categoryId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(updatedCategory)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'danhMucSP Updated') {
+            Swal.fire(
+                'Thành công!',
+                'Cập nhật danh mục thành công!',
+                'success'
+            );
+            fetchCategories(); // Tải lại danh sách danh mục
+            document.getElementById('editCategoryModal').style.display = 'none';
+        } else {
+            Swal.fire(
+                'Lỗi!',
+                'Có lỗi xảy ra khi cập nhật: ' + data.message,
+                'error'
+            );
+        }
+    })
+    .catch(error => {
+        console.error('Error updating category:', error);
+        Swal.fire(
+            'Lỗi!',
+            'Có lỗi xảy ra khi cập nhật danh mục. Vui lòng kiểm tra console để biết thêm thông tin.',
+            'error'
+        );
+    });
+}
+
+function editCategory(categoryId) {
+    // Mở modal chỉnh sửa
+    const editModal = document.getElementById('editCategoryModal');
+    editModal.style.display = 'block';
+
+    // Lấy thông tin danh mục hiện tại
+    fetch(`http://localhost/CuaHangDT/api/danhMucSP/show.php?id=${categoryId}`)
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('editCategoryId').value = data.category_id;
+        document.getElementById('editCategoryName').value = data.category_name;
+        document.getElementById('editCategoryDescription').value = data.description;
+    })
+    .catch(error => console.error('Error fetching category:', error));
+}
+
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'block';
+}
+
+function addCategory() {
+    const categoryName = document.getElementById('newCategoryName').value;
+    const description = document.getElementById('newCategoryDescription').value;
+
+    fetch('http://localhost/CuaHangDT/api/danhMucSP/create.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ category_name: categoryName, description: description })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.message && data.message.toLowerCase() === 'done') {
+            Swal.fire(
+                'Thành công!',
+                'Danh mục mới đã được thêm!',
+                'success'
+            );
+            fetchCategories(); // Tải lại danh sách danh mục
+            closeModal('addCategoryModal');
+        } else {
+            Swal.fire(
+                'Lỗi!',
+                'Có lỗi xảy ra khi thêm danh mục: ' + (data.message || 'Unknown error'),
+                'error'
+            );
+        }
+    })
+    .catch(error => {
+        console.error('Error creating category:', error);
+        Swal.fire(
+            'Lỗi!',
+            'Có lỗi xảy ra khi thêm danh mục. Vui lòng kiểm tra console để biết thêm thông tin.',
+            'error'
+        );
+    });
+}
+    
+    </script>
+</body>
+</html> 

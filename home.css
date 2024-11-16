@@ -64,14 +64,67 @@ body,h1,h2,h3,h4,p,ul,li {
     
 } */
 .product {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 12px;
     background: white;
-    width: 100%;
-    height: 100%;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    height: 350px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+}
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-color: #b0b0b0;
+}
+
+.product img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.product h4 {
+    margin: 10px 0;
+    font-size: 1.1em;
+    height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.product h4 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.product-price {
+    color: #e44d26;
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.product button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+    font-size: 15px;
+}
+
+.product button:hover {
+    background: #45a049;
 }
 
 .discount-label {
@@ -165,10 +218,12 @@ body,h1,h2,h3,h4,p,ul,li {
 }
 
 .products {
-    display: flex;
-    width: 100%;
-    transition: transform 0.3s ease;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1400px;
 }
 
 .products-container {
@@ -317,6 +372,17 @@ section {
 
 body {
     padding-top: 170px;
+}
+
+/* Animation cho số lượng giỏ hàng */
+@keyframes cartCountBlink {
+    0% { color: white; }
+    50% { color: #ff0000; }
+    100% { color: white; }
+}
+
+.cart-count-blink {
+    animation: cartCountBlink 2s ease;
 }
 
 
