@@ -375,5 +375,33 @@ footer {
     right: 10px;
 }
 
+.continue-shopping {
+    background-color: #28a745;
+    color: white !important;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    float: right;
+    margin-right: 15px;
+}
 
+.continue-shopping:hover {
+    background-color: #218838;
+    transform: translateX(-5px);
+}
+
+.continue-shopping i {
+    margin-right: 5px;
+}
+
+/* Đảm bảo responsive */
+@media (max-width: 768px) {
+    .continue-shopping {
+        float: none;
+        display: block;
+        margin: 10px auto;
+        text-align: center;
+        width: fit-content;
+    }
+}
 
