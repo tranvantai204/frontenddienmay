@@ -7,90 +7,215 @@
     <title>Thông tin người dùng</title>
     <link rel="stylesheet" href="StylesA.css">
     <style>
+        /* CSS cho bảng thông tin */
         .account-info,
         .update-info {
-            max-width: 500px;
-            margin: auto;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            font-family: 'Noto Sans', sans-serif;
         }
 
         .account-info h4,
         .update-info h4 {
+            color: #009879;
             margin-bottom: 20px;
+            font-size: 1.5em;
         }
 
         .account-info p {
-            margin: 10px 0;
+            margin: 15px 0;
+            padding: 10px;
+            border-bottom: 1px solid #dddddd;
         }
 
+        .account-info p:last-child {
+            border-bottom: 2px solid #009879;
+        }
+
+        .account-info strong {
+            color: #333;
+            width: 150px;
+            display: inline-block;
+        }
+
+        /* CSS cho form cập nhật */
         .update-info {
-            display: none; /* Ẩn form cập nhật thông tin */
+            display: none;
         }
 
         .update-info label {
             display: block;
-            margin-bottom: 5px;
+            margin: 10px 0 5px;
+            color: #333;
             font-weight: bold;
         }
 
         .update-info input {
             width: 100%;
-            padding: 10px;
+            padding: 12px 15px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid #dddddd;
             border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
         }
 
+        .update-info input:focus {
+            border-color: #009879;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 152, 121, 0.3);
+        }
+
+        /* CSS cho nút */
+        .update-button {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .update-button button,
         .update-info button {
-            padding: 10px 20px;
-            background-color: #007bff;
+            padding: 12px 25px;
+            background-color: #009879;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 1em;
+            margin: 0 10px;
+            transition: all 0.3s ease;
         }
 
+        .update-button button:hover,
         .update-info button:hover {
-            background-color: #0056b3;
+            background-color: #007a63;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
+        /* CSS cho thông báo */
         .alert {
             display: none;
-            padding: 10px;
-            margin-top: 20px;
+            padding: 15px;
+            margin: 20px 0;
             border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
         }
 
         .alert.success {
             background-color: #d4edda;
             color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
         .alert.error {
             background-color: #f8d7da;
             color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
-        .update-button {
-            margin-top: 20px;
-            text-align: center;
+        /* CSS cho header */
+        #top-header {
+            background-color: #f8f9fa;
+            padding: 8px 0;
         }
 
-        .update-button button {
-            padding: 10px 20px;
-            background-color: #007bff;
+        #top-header ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: right;
+            margin-right: 20px;
+        }
+
+        #top-header li {
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        #top-header a {
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+
+        #top-header a:hover {
+            color: #009879;
+        }
+
+        /* CSS cho nút tiếp tục thanh toán */
+        .continue-payment-btn {
+            background-color: #009879;
             color: white;
             border: none;
+            padding: 12px 25px;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 1em;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .update-button button:hover {
-            background-color: #0056b3;
+        .continue-payment-btn:hover {
+            background-color: #007a63;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .continue-payment-btn i {
+            font-size: 1.2em;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .account-info,
+            .update-info {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .update-button button,
+            .continue-payment-btn {
+                width: calc(100% - 20px);
+                margin: 10px;
+                justify-content: center;
+            }
+
+            .account-info strong {
+                width: 100%;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            #top-header {
+                text-align: center;
+            }
+            
+            #top-header ul {
+                margin-right: 0;
+            }
+            
+            #top-header li {
+                margin: 0 10px;
+            }
+        }
+
+        /* CSS cho tiêu đề section */
+        section h3 {
+            color: #009879;
+            text-align: center;
+            margin: 30px 0;
+            font-size: 2em;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -119,18 +244,6 @@
         </div>
     </header>
 
-    <!-- NAVIGATION -->
-    <nav>
-        <ul>
-            <li><a href="home.html">Trang chủ</a></li>
-            <li><a href="voucher.html">Khuyến mãi</a></li>
-            <li><a href="Laptop.html">Laptop</a></li>
-            <li><a href="Smartphone.html">Smartphone</a></li>
-            <li><a href="photograph.html">Máy ảnh</a></li>
-            <li><a href="spareparts.html">Phụ kiện</a></li>
-        </ul>
-    </nav>
-
     <!-- SECTION: THÔNG TIN KHÁCH HÀNG -->
     <section>
         <h3>Thông tin tài khoản của tôi</h3>
@@ -144,6 +257,9 @@
 
         <div class="update-button">
             <button onclick="showUpdateForm()">Cập nhật thông tin</button>
+            <button class="continue-payment-btn" onclick="window.location.href='cart.html'">
+                <i class="fas fa-arrow-left"></i> Tiếp tục thanh toán
+            </button>
         </div>
 
         <div class="update-info">
@@ -189,38 +305,44 @@
         }
 
         async function fetchUserInfo() {
-        const token = localStorage.getItem('token'); // Lấy token từ localStorage
-        if (!token) {
-            console.error("Token không tồn tại.");
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost/CuaHangDT/api/nguoiDung/getinfo.php', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-
-                // Cập nhật giao diện với thông tin người dùng
-                document.getElementById('name').innerText = data.username || "Không có thông tin";
-                document.getElementById('email').innerText = data.email || "Không có thông tin";
-                document.getElementById('phone').innerText = data.phone_number || "Không có thông tin";
-                document.getElementById('address').innerText = data.address 
-                    ? `${data.address}, ${data.city}` 
-                    : "Không có thông tin";
-            } else {
-                console.error("Không thể lấy thông tin người dùng:", response.statusText);
-                document.getElementById('account-info').innerText = "Không thể lấy thông tin người dùng.";
+            const token = localStorage.getItem('token'); // Lấy token từ localStorage
+            if (!token) {
+                console.error("Token không tồn tại.");
+                return;
             }
-        } catch (error) {
-            console.error("Lỗi:", error);
+
+            try {
+                const response = await fetch('http://localhost/CuaHangDT/api/nguoiDung/getinfo.php', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Cập nhật giao diện với thông tin người dùng
+                    document.getElementById('name').innerText = data.username || "Không có thông tin";
+                    document.getElementById('email').innerText = data.email || "Không có thông tin";
+                    document.getElementById('phone').innerText = data.phone_number || "Không có thông tin";
+                    document.getElementById('address').innerText = data.address 
+                        ? `${data.address}, ${data.city}` 
+                        : "Không có thông tin";
+
+                    // Pre-fill the update form
+                    document.getElementById('username_up').value = data.username || '';
+                    document.getElementById('phone_number_up').value = data.phone_number || '';
+                    document.getElementById('address_up').value = data.address || '';
+                    document.getElementById('city_up').value = data.city || '';
+                } else {
+                    console.error("Không thể lấy thông tin người dùng:", response.statusText);
+                    document.getElementById('account-info').innerText = "Không thể lấy thông tin người dùng.";
+                }
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
         }
-    }
 
         // Gọi hàm để lấy thông tin người dùng khi tải trang
         fetchUserInfo();
