@@ -1,44 +1,66 @@
 let currentPage = 1;
-const limit = 10; // Số sản phẩm trên mỗi trang
-const token = localStorage.getItem('token');
-console.log('Token:', token); // Kiểm tra token
+const limit = 10;
 
 function fetchProducts(page) {
-    // Thêm timestamp để tránh cache
-    const timestamp = new Date().getTime();
-    
-    fetch(`http://localhost/CuaHangDT/api/sanPham/read.php?page=${page}&t=${timestamp}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
+    currentPage = page;
+    const productTable = document.getElementById('productTable');
+    productTable.innerHTML = '<tr><td colspan="6">Đang tải...</td></tr>';
+
+    fetch(`http://localhost/CuaHangDT/api/sanPham/read.php?page=${page}&limit=${limit}`)
+        .then(response => response.json())
         .then(data => {
-            console.log('Fetched products:', data); // Log data để debug
-            if (data.data && data.paging) {
+            console.log('API Response:', data);
+            if (data.data) {
                 displayProducts(data.data);
-                updatePagination(data.paging.total_pages, page);
+                const totalPages = data.total_pages || Math.ceil(data.total / limit);
+                updatePagination(totalPages);
             } else {
-                console.error('Invalid data structure:', data);
+                productTable.innerHTML = '<tr><td colspan="6">Không có dữ liệu</td></tr>';
             }
         })
         .catch(error => {
-            console.error('Error fetching products:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Lỗi',
-                text: 'Không thể tải danh sách sản phẩm'
-            });
+            console.error('Error:', error);
+            productTable.innerHTML = '<tr><td colspan="6">Lỗi khi tải dữ liệu</td></tr>';
         });
+}
+
+function updatePagination(totalPages) {
+    const pagination = document.querySelector('.pagination');
+    pagination.innerHTML = '';
+
+    // Nút Previous
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Trang trước';
+    prevButton.disabled = currentPage === 1;
+    prevButton.onclick = () => goToPage(currentPage - 1);
+    pagination.appendChild(prevButton);
+
+    // Hiển thị số trang hiện tại
+    const pageInfo = document.createElement('span');
+    pageInfo.textContent = `Trang ${currentPage} / ${totalPages}`;
+    pagination.appendChild(pageInfo);
+
+    // Nút Next
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Trang sau';
+    nextButton.disabled = currentPage === totalPages;
+    nextButton.onclick = () => goToPage(currentPage + 1);
+    pagination.appendChild(nextButton);
+}
+
+function goToPage(page) {
+    if (page >= 1) {
+        fetchProducts(page);
+    }
 }
 
 function displayProducts(products) {
     const productTable = document.getElementById('productTable');
-    productTable.innerHTML = ''; // Xóa danh sách sản phẩm hiện tại
+    productTable.innerHTML = '';
+    
     products.forEach((product, index) => {
-        const productRow = document.createElement('tr');
-        productRow.innerHTML = `
+        const row = document.createElement('tr');
+        row.innerHTML = `
             <td>${(currentPage - 1) * limit + index + 1}</td>
             <td>${product.product_name}</td>
             <td>${product.price} VND</td>
@@ -49,60 +71,46 @@ function displayProducts(products) {
                 <button class="button-delete" onclick="deleteProduct(${product.product_id})">Xóa</button>
             </td>
         `;
-        productTable.appendChild(productRow);
+        productTable.appendChild(row);
     });
 }
 
-function updatePagination(totalPages, currentPage) {
-    const pagination = document.querySelector('.pagination');
-    pagination.innerHTML = ''; // Xóa các nút phân trang cũ
-
-    // Nút "Quay lại"
-    const prevButton = document.createElement('button');
-    prevButton.textContent = 'Quay lại';
-    prevButton.disabled = currentPage === 1;
-    prevButton.className = currentPage === 1 ? 'active' : '';
-    prevButton.onclick = () => changePage(currentPage - 1);
-    pagination.appendChild(prevButton);
-
-    // Nút số trang
-    for (let i = 1; i <= totalPages; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.className = i === currentPage ? 'active' : '';
-        pageButton.disabled = i === currentPage;
-        pageButton.onclick = () => changePage(i);
-        pagination.appendChild(pageButton);
-    }
-
-    // Nút "Tiếp"
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Tiếp';
-    nextButton.disabled = currentPage === totalPages;
-    nextButton.className = currentPage === totalPages ? 'active' : '';
-    nextButton.onclick = () => changePage(currentPage + 1);
-    pagination.appendChild(nextButton);
-}
-
-// Thêm sự kiện lắng nghe cho nút Previous
-document.getElementById('prev-btn').addEventListener('click', () => {
-    if (currentPage > 1) {
-        currentPage--; // Giảm trang hiện tại
-        fetchProducts(currentPage); // Gọi lại sản phẩm cho trang mới
-    }
-});
-
-// Thêm sự kiện lắng nghe cho nút Next
-document.getElementById('next-btn').addEventListener('click', () => {
-    currentPage++; // Tăng trang hiện tại
-    fetchProducts(currentPage); // Gọi lại sản phẩm cho trang mới
-});
-
-// Tải sản phẩm khi trang được tải
+// Khởi tạo khi trang load
 document.addEventListener('DOMContentLoaded', () => {
-    fetchProducts(currentPage);
-    fetchSuppliers(); // Lấy danh sách nhà cung cấp khi tải trang
+    fetchProducts(1);
+    fetchSuppliers();
 });
+
+// CSS cho phân trang
+const style = document.createElement('style');
+style.textContent = `
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin: 20px 0;
+    }
+
+    .pagination button {
+        padding: 8px 16px;
+        background-color: #4a3d93;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .pagination button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    .pagination span {
+        font-weight: bold;
+    }
+`;
+document.head.appendChild(style);
 
 // Hàm lấy nhà cung cấp
 function fetchSuppliers() {
