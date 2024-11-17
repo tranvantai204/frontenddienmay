@@ -334,7 +334,7 @@
                     });
                 });
 
-                // Xử lý nút xóa
+                // Xử lý n��t xóa
                 document.querySelectorAll('.delete-btn').forEach(button => {
                     button.addEventListener('click', function() {
                         const productId = this.dataset.productId;
@@ -562,6 +562,24 @@
             async function processPayment(orderData) {
                 try {
                     console.log('Processing payment with data:', orderData);
+
+                    // Kiểm tra thông tin người dùng
+                    if (!orderData.fullName || !orderData.phone || !orderData.address) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Thiếu thông tin!',
+                            text: 'Vui lòng cập nhật thông tin giao hàng trước khi thanh toán.',
+                            showCancelButton: true,
+                            confirmButtonText: 'Cập nhật',
+                            cancelButtonText: 'Hủy'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Chuyển hướng đến trang cập nhật thông tin
+                                window.location.href = 'infomationuser.html'; // Thay đổi đường dẫn nếu cần
+                            }
+                        });
+                        return; // Dừng lại nếu thiếu thông tin
+                    }
 
                     // Tạo mã giao dịch mới cho mỗi lần thanh toán
                     const transactionCode = `DH${Date.now().toString().slice(-6)}`;

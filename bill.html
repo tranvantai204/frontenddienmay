@@ -216,7 +216,7 @@
     </style>
 
 <div class="sidebar">
-    <h2>IPOS CALL CENTER</h2>
+    <h2>MANAGEMENT CENTER</h2>
     <ul><li>Dashboard</li>
     <ul>
         <li onclick="location.href='productad.html'">Quản Lý Sản Phẩm</li>
@@ -387,8 +387,10 @@ const limit = 10; // Số sản phẩm trên mỗi trang
         console.log('OrderID:', orderId);
 
         const token = localStorage.getItem('token');
-        
-        fetch(`http://localhost/CuaHangDT/api/chiTietDonHang/get_detail.php?order_id=${orderId}`, {
+        const url = `http://localhost/CuaHangDT/api/chiTietDonHang/get_detail.php?order_id=${orderId}`;
+        console.log('Request URL:', url);
+
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -398,7 +400,9 @@ const limit = 10; // Số sản phẩm trên mỗi trang
         .then(response => {
             console.log('Response status:', response.status);
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                return response.text().then(text => {
+                    throw new Error(`Network response was not ok: ${response.status} - ${text}`);
+                });
             }
             return response.json();
         })
@@ -464,7 +468,7 @@ const limit = 10; // Số sản phẩm trên mỗi trang
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi',
-                text: 'Không thể tải chi tiết đơn hàng. Vui lòng thử lại sau.'
+                text: `Đơn hàng không tồn tại`
             });
         });
     }

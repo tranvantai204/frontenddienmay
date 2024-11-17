@@ -214,7 +214,7 @@ img:hover {
 }
     </style>
     <div class="sidebar">
-        <h2>IPOS CALL CENTER</h2>
+        <h2>MANAGEMENT CENTER</h2>
         <ul><li>Dashboard</li>
         <ul>
             <li onclick="location.href='productad.html'">Quản Lý Sản Phẩm</li>
@@ -305,232 +305,318 @@ img:hover {
     
         // Đăng xuất
         document.getElementById('logoutButton').addEventListener('click', function() {
-    window.location.href = 'login.html';
-});
-
-// Hàm fetch API để lấy danh sách tài khoản từ database
-let currentPage = 1; // Biến để theo dõi trang hiện tại
-const limit = 5;
-let currentRole = 'all'; // Biến để theo dõi vai trò hiện tại
-
-function fetchAccounts(page = 1, role = 'all') {
-    // Kiểm tra token admin
-    const token = localStorage.getItem('token'); // Giả sử bạn lưu token trong localStorage
-    console.log('Current Token:', token); // Debug token
-
-    if (!token) {
-        alert('Bạn chưa đăng nhập!');
-        return;
-    }
-
-    fetch(`http://localhost/CuaHangDT/api/nguoiDung/getAccount.php?page=${page}&role=${role}&limit=${limit}`, {
-        headers: {
-            'Authorization': `Bearer ${token}` // Thêm token vào header nếu cần
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-    console.log(data.accounts); // Kiểm tra dữ liệu trả về từ API
-    const accountTable = document.getElementById('accountTable');
-    accountTable.innerHTML = ''; // Xóa dữ liệu cũ
-
-    // Duyệt qua mỗi tài khoản và thêm vào bảng
-    data.accounts.forEach(account => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${account.id}</td>
-            <td>${account.username}</td>
-            <td>${account.email}</td>
-            <td>${account.phone_number}</td>
-            <td>${account.address} - ${account.city}</td>
-            <td>
-                <button class="btn btn-info" onclick="viewAccount(${account.id})">Xem chi tiết</button>
-                <button class="btn btn-warning" onclick="editAccount(${account.id})">Sửa</button>
-            </td>
-        `;
-        accountTable.appendChild(row);
-    });
-
-    // Cập nhật phân trang
-    updatePagination(data.totalPages, currentPage);
-})
-        .catch(error => {
-            console.error('Error fetching accounts:', error);
-            alert('Có lỗi xảy ra: ' + error.message); // Hiển thị thông báo lỗi cho người dùng
+            logout();
         });
-}
 
-// Gọi hàm fetchAccounts ban đầu với vai trò mặc định
-fetchAccounts(currentPage, currentRole);
-
-// Hàm để thay đổi vai trò và tải lại tài khoản
-function changeRole(role) {
-    currentRole = role;
-    fetchAccounts(currentPage, currentRole);
-}
-
-// Gọi hàm fetchAccounts ban đầu với vai trò mặc định
-fetchAccounts(currentPage, currentRole);
-
-
-
-// Cập nhật phân trang
-function updatePagination(totalPages, currentPage) {
-    const pagination = document.querySelector('.pagination');
-    pagination.innerHTML = ''; // Xóa các nút phân trang cũ
-
-    // Nút "Quay lại"
-    const prevButton = document.createElement('button');
-    prevButton.textContent = 'Quay lại';
-    prevButton.disabled = currentPage === 1;
-    prevButton.onclick = () => changePage(currentPage - 1);
-    pagination.appendChild(prevButton);
-
-    // Nút số trang
-    for (let i = 1; i <= totalPages; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.className = i === currentPage ? 'active' : '';
-        pageButton.onclick = () => changePage(i);
-        pagination.appendChild(pageButton);
-    }
-
-    // Nút "Tiếp"
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Tiếp';
-    nextButton.disabled = currentPage === totalPages;
-    nextButton.onclick = () => changePage(currentPage + 1);
-    pagination.appendChild(nextButton);
-}
-
-// Hàm thay đổi trang
-function changePage(page) {
-    currentPage = page; // Cập nhật trang hiện tại
-    fetchAccounts(currentPage); // Gọi lại hàm để lấy danh sách tài khoản
-}
-
-// Gọi hàm để lấy danh sách tài khoản khi trang được tải
-fetchAccounts();
-
-        // Hiển thị form thêm tài khoản
-        function showAddAccountForm() {
-            document.getElementById('addAccountForm').style.display = 'block';
-            document.getElementById('editAccountForm').style.display = 'none';
+        // Thêm hàm logout
+        function logout() {
+            localStorage.removeItem('token'); // Xóa token
+            sessionStorage.removeItem('adminWelcomeSeen'); // Xóa flag welcome
+            window.location.href = 'login.html';
         }
 
-        // Ẩn form thêm tài khoản
-        function hideAddAccountForm() {
-            document.getElementById('addAccountForm').style.display = 'none';
-        }
+        // Hàm fetch API để lấy danh sách tài khoản từ database
+        let currentPage = 1; // Biến để theo dõi trang hiện tại
+        const limit = 5;
+        let currentRole = 'all'; // Biến để theo dõi vai trò hiện tại
 
-        // Hiển thị form sửa tài khoản
-        function showEditAccountForm() {
-            document.getElementById('editAccountForm').style.display = 'block';
-            document.getElementById('addAccountForm').style.display = 'none';
-        }
+        function fetchAccounts(page = 1, role = 'all') {
+            // Kiểm tra token admin
+            const token = localStorage.getItem('token'); // Giả sử bạn lưu token trong localStorage
+            console.log('Current Token:', token); // Debug token
 
-        // Ẩn form sửa tài khoản
-        function hideEditAccountForm() {
-            document.getElementById('editAccountForm').style.display = 'none';
-        }
-
-        // Xử lý khi nhấn nút thêm tài khoản mới
-        document.getElementById('submitNewAccount').addEventListener('click', function() {
-            console.log('Button clicked'); // Thêm log để debug
-            
-            // Lấy giá trị từ form
-            const username = document.getElementById('newAccountUsername').value.trim();
-            const email = document.getElementById('newAccountEmail').value.trim();
-            const password = document.getElementById('newAccountPassword').value.trim();
-            const phone_number = document.getElementById('newAccountPhoneNumber').value.trim();
-
-            console.log('Form values:', { username, email, password, phone_number }); // Thêm log để debug
-
-            // Kiểm tra các trường bắt buộc
-            if (!username || !email || !password || !phone_number) {
-                Swal.fire({
-                    position: "top",
-                    icon: "error",
-                    title: "Vui lòng điền đầy đủ thông tin!",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
+            if (!token) {
+                alert('Bạn chưa đăng nhập!');
                 return;
             }
 
-            // Gửi request đến API
-            fetch('http://localhost/CuaHangDT/api/nguoiDung/registerAdmin.php', {
-                method: 'POST',
+            fetch(`http://localhost/CuaHangDT/api/nguoiDung/getAccount.php?page=${page}&role=${role}&limit=${limit}`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    password: password,
-                    phone_number: phone_number
+                    'Authorization': `Bearer ${token}` // Thêm token vào header nếu cần
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
                 })
-            })
-            .then(response => {
-                console.log('Response:', response); // Thêm log để debug
-                return response.json();
-            })
-            .then(data => {
-                console.log('Data:', data); // Thêm log để debug
-                if (data.message === "User was created.") {
-                    Swal.fire({
-                        position: "top",
-                        icon: "success",
-                        title: "Thêm tài khoản admin thành công!",
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        // Reset form và ẩn nó
-                        document.getElementById('adminAddForm').reset();
-                        document.getElementById('addAccountForm').style.display = 'none';
-                        // Tải lại danh sách tài khoản
-                        loadAccounts();
-                    });
-                } else {
+                .then(data => {
+            console.log(data.accounts); // Kiểm tra dữ liệu trả về từ API
+            const accountTable = document.getElementById('accountTable');
+            accountTable.innerHTML = ''; // Xóa dữ liệu cũ
+
+            // Duyệt qua mỗi tài khoản và thêm vào bảng
+            data.accounts.forEach(account => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${account.id}</td>
+                    <td>${account.username}</td>
+                    <td>${account.email}</td>
+                    <td>${account.phone_number}</td>
+                    <td>${account.address} - ${account.city}</td>
+                    <td>
+                        <button class="btn btn-info" onclick="viewAccount(${account.id})">Xem chi tiết</button>
+                        <button class="btn btn-warning" onclick="editAccount(${account.id})">Sửa</button>
+                    </td>
+                `;
+                accountTable.appendChild(row);
+            });
+
+            // Cập nhật phân trang
+            updatePagination(data.totalPages, currentPage);
+        })
+                .catch(error => {
+                    console.error('Error fetching accounts:', error);
+                    alert('Có lỗi xảy ra: ' + error.message); // Hiển thị thông báo lỗi cho người dùng
+                });
+        }
+
+        // Gọi hàm fetchAccounts ban đầu với vai trò mặc định
+        fetchAccounts(currentPage, currentRole);
+
+        // Hàm để thay đổi vai trò và tải lại tài khoản
+        function changeRole(role) {
+            currentRole = role;
+            fetchAccounts(currentPage, currentRole);
+        }
+
+        // Gọi hàm fetchAccounts ban đầu với vai trò mặc định
+        fetchAccounts(currentPage, currentRole);
+
+
+
+        // Cập nhật phân trang
+        function updatePagination(totalPages, currentPage) {
+            const pagination = document.querySelector('.pagination');
+            pagination.innerHTML = ''; // Xóa các nút phân trang cũ
+
+            // Nút "Quay lại"
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Quay lại';
+            prevButton.disabled = currentPage === 1;
+            prevButton.onclick = () => changePage(currentPage - 1);
+            pagination.appendChild(prevButton);
+
+            // Nút số trang
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = i === currentPage ? 'active' : '';
+                pageButton.onclick = () => changePage(i);
+                pagination.appendChild(pageButton);
+            }
+
+            // Nút "Tiếp"
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Tiếp';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.onclick = () => changePage(currentPage + 1);
+            pagination.appendChild(nextButton);
+        }
+
+        // Hàm thay đổi trang
+        function changePage(page) {
+            currentPage = page; // Cập nhật trang hiện tại
+            fetchAccounts(currentPage); // Gọi lại hàm để lấy danh sách tài khoản
+        }
+
+        // Gọi hàm để lấy danh sách tài khoản khi trang đ��ợc tải
+        fetchAccounts();
+
+            // Hiển thị form thêm tài khoản
+            function showAddAccountForm() {
+                document.getElementById('addAccountForm').style.display = 'block';
+                document.getElementById('editAccountForm').style.display = 'none';
+            }
+
+            // Ẩn form thêm tài khoản
+            function hideAddAccountForm() {
+                document.getElementById('addAccountForm').style.display = 'none';
+            }
+
+            // Hiển thị form sửa tài khoản
+            function showEditAccountForm() {
+                document.getElementById('editAccountForm').style.display = 'block';
+                document.getElementById('addAccountForm').style.display = 'none';
+            }
+
+            // Ẩn form sửa tài khoản
+            function hideEditAccountForm() {
+                document.getElementById('editAccountForm').style.display = 'none';
+            }
+
+            // Xử lý khi nhấn nút thêm tài khoản mới
+            document.getElementById('submitNewAccount').addEventListener('click', function() {
+                console.log('Button clicked'); // Thêm log để debug
+                
+                // Lấy giá trị từ form
+                const username = document.getElementById('newAccountUsername').value.trim();
+                const email = document.getElementById('newAccountEmail').value.trim();
+                const password = document.getElementById('newAccountPassword').value.trim();
+                const phone_number = document.getElementById('newAccountPhoneNumber').value.trim();
+
+                console.log('Form values:', { username, email, password, phone_number }); // Thêm log để debug
+
+                // Kiểm tra các trường bắt buộc
+                if (!username || !email || !password || !phone_number) {
                     Swal.fire({
                         position: "top",
                         icon: "error",
-                        title: "Thêm tài khoản thất bại",
-                        text: data.message,
+                        title: "Vui lòng điền đầy đủ thông tin!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    return;
+                }
+
+                // Gửi request đến API
+                fetch('http://localhost/CuaHangDT/api/nguoiDung/registerAdmin.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password,
+                        phone_number: phone_number
+                    })
+                })
+                .then(response => {
+                    console.log('Response:', response); // Thêm log để debug
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data:', data); // Thêm log để debug
+                    if (data.message === "User was created.") {
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Thêm tài khoản admin thành công!",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            // Reset form và ẩn nó
+                            document.getElementById('adminAddForm').reset();
+                            document.getElementById('addAccountForm').style.display = 'none';
+                            // Tải lại danh sách tài khoản
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1500);
+                        });
+                    } else {
+                        Swal.fire({
+                            position: "top",
+                            icon: "error",
+                            title: "Thêm tài khoản thất bại",
+                            text: data.message,
+                            showConfirmButton: true
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        position: "top",
+                        icon: "error",
+                        title: "Lỗi",
+                        text: "Đã xảy ra lỗi khi thêm tài khoản",
                         showConfirmButton: true
                     });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    position: "top",
-                    icon: "error",
-                    title: "Lỗi",
-                    text: "Đã xảy ra lỗi khi thêm tài khoản",
-                    showConfirmButton: true
                 });
             });
-        });
 
-        // Tự động tải danh sách tài khoản khi trang được tải
-        window.onload = fetchAccounts;
-        window.onload = function() {
-    fetchAccounts(); // Tải danh sách tài khoản
+            // Tự động tải danh sách tài khoản khi trang được tải
+            window.onload = fetchAccounts;
+            window.onload = function() {
+        fetchAccounts(); // Tải danh sách tài khoản
 
-    // Kiểm tra xem có token không
-    const token = localStorage.getItem('token');
-    if (token) {
-        const decoded = JSON.parse(atob(token.split('.')[1])); // Giải mã token
-        document.getElementById('userName').innerText = `Chào mừng: ${decoded.data.username}`; // Hiển thị username
+        // Kiểm tra xem có token không
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decoded = JSON.parse(atob(token.split('.')[1])); // Giải mã token
+            document.getElementById('userName').innerText = `Chào mừng: ${decoded.data.username}`; // Hiển thị username
+        }
+        
+    };
+    function showAdminWelcome() {
+        const token = localStorage.getItem('token');
+        if (!token || sessionStorage.getItem('adminWelcomeSeen')) return;
+
+        try {
+            const payloadBase64 = token.split('.')[1];
+            const payload = JSON.parse(atob(payloadBase64));
+            const userRole = payload.data?.role;
+            const username = payload.data?.username;
+
+            if (userRole === 'admin') {
+                Swal.fire({
+                    title: 'Chào mừng Admin!',
+                    html: `<div style="font-size: 1.2em; color: #4a3d93;">
+                        Xin chào <b>${username}</b>!<br>
+                        Chúc bạn có một ngày làm việc hiệu quả.
+                    </div>`,
+                    icon: 'success',
+                    confirmButtonText: 'Cảm ơn',
+                    confirmButtonColor: '#4a3d93',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    willClose: () => {
+                        sessionStorage.setItem('adminWelcomeSeen', 'true');
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error showing admin welcome:', error);
+        }
     }
-};
+
+    // Đảm bảo chỉ gọi một lần khi trang load
+    document.addEventListener('DOMContentLoaded', showAdminWelcome, { once: true });
+
+    // Thêm CSS cho animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes bounceIn {
+            from, 20%, 40%, 60%, 80%, to {
+                animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            }
+            0% {
+                opacity: 0;
+                transform: scale3d(.3, .3, .3);
+            }
+            20% {
+                transform: scale3d(1.1, 1.1, 1.1);
+            }
+            40% {
+                transform: scale3d(.9, .9, .9);
+            }
+            60% {
+                opacity: 1;
+                transform: scale3d(1.03, 1.03, 1.03);
+            }
+            80% {
+                transform: scale3d(.97, .97, .97);
+            }
+            to {
+                opacity: 1;
+                transform: scale3d(1, 1, 1);
+            }
+        }
+        .animated {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+        .bounceIn {
+            animation-name: bounceIn;
+        }
+        .text-primary {
+            color: #4a3d93 !important;
+        }
+    `;
+    document.head.appendChild(style);
 
     </script>
 </body>

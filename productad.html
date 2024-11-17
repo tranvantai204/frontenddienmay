@@ -505,7 +505,7 @@
 </head>
 <body>
     <div class="sidebar">
-        <h2>IPOS CALL CENTER</h2>
+        <h2>MANAGEMENT CENTER</h2>
         <ul><li>Dashboard</li>
         <ul>
             <li class="active">Quản Lý Sản Phẩm</li>
@@ -606,8 +606,27 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="editImage">Hình ảnh:</label>
-                <input type="file" id="editImage" accept="image/*">
+                <label>Hình ảnh thumbnail:</label>
+                <input type="file" id="editThumbnail" accept="image/*">
+                <img id="currentThumbnail" src="" alt="Thumbnail hiện tại" style="max-width: 200px; display: none;">
+            </div>
+
+            <div class="form-group">
+                <label>Hình ảnh chi tiết 1:</label>
+                <input type="file" id="editDetail1" accept="image/*">
+                <img id="currentDetail1" src="" alt="Chi tiết 1 hiện tại" style="max-width: 200px; display: none;">
+            </div>
+
+            <div class="form-group">
+                <label>Hình ảnh chi tiết 2:</label>
+                <input type="file" id="editDetail2" accept="image/*">
+                <img id="currentDetail2" src="" alt="Chi tiết 2 hiện tại" style="max-width: 200px; display: none;">
+            </div>
+
+            <div class="form-group">
+                <label>Hình ảnh chi tiết 3:</label>
+                <input type="file" id="editDetail3" accept="image/*">
+                <img id="currentDetail3" src="" alt="Chi tiết 3 hiện tại" style="max-width: 200px; display: none;">
             </div>
             <button onclick="saveProductChanges()">Lưu Thay Đổi</button>
         </div>

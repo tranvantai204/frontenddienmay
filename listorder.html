@@ -324,6 +324,11 @@
                     headers: getHeaders()
                 });
 
+                // Chỉ đọc phản hồi một lần
+                const responseText = await response.text(); // Đọc phản hồi dưới dạng văn bản
+                console.log('Response status:', response.status); // Log status code
+                console.log('Response:', responseText); // Log response body
+
                 if (!response.ok) {
                     if (response.status === 401) {
                         showError('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
@@ -333,7 +338,8 @@
                     throw new Error('Không thể lấy danh sách đơn hàng');
                 }
 
-                const data = await response.json();
+                // Chuyển đổi phản hồi văn bản thành JSON
+                const data = JSON.parse(responseText);
                 if (data.records && data.records.length > 0) {
                     displayOrders(data.records);
                 } else {
